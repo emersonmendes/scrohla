@@ -1,0 +1,16 @@
+{
+  "name": "scrohla",
+  "version": "1.0.0",
+  "description": "Just a study selenium nodejs app",
+  "main": "index.js",
+  "author": "Emerson Mendes",
+  "license": "MIT",
+  "dependencies": {
+    "chromedriver": "^2.31.0",
+    "selenium-webdriver": "^3.5.0",
+    "winston": "^2.3.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
