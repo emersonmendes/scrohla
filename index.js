@@ -1,21 +1,18 @@
-const { Core } = require('./src/core');
+const { Scrohla } = require('./src/scrohla');
 const logger = require('winston');
     
-const core = new Core({
-  browser: "chrome",
-  args: [ 
-    "--start-maximized",
-    "--hide-scrollbars",
-    "--headless",
-    "--disable-gpu"
-  ],
-  target: "http://www.globo.com",
+const scrohla = new Scrohla({
+  //args: [ "--incognito" ],
+  //resetArgs: true,
+  //timeout: 10000,
+  target: "https://www.google.com",
   screenshotPath: "/home/emerson/Downloads"
 });
 
-core.takeScreenshot();
+scrohla.start();
 
-setTimeout(() => {
-  logger.info("time out!");
-  core.quit(); 
-},50000);
+
+
+scrohla.quit();
+
+
