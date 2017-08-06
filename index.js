@@ -1,18 +1,24 @@
+'use strict';
+
 const { Scrohla } = require('./src/scrohla');
+const { target } = require('./targets/submarino');
+const { DataBase } = require('./src/db'); 
 const logger = require('winston');
-    
+
 const scrohla = new Scrohla({
-  //args: [ "--incognito" ],
-  //resetArgs: true,
-  //timeout: 10000,
-  target: "https://www.google.com",
-  screenshotPath: "/home/emerson/Downloads"
+  target: target.url
 });
 
-scrohla.start();
+target.execute(scrohla, (result) => {
 
+  const db = new DataBase();
+  
+  db.save(target.key, result,() => {
+    logger.info("Saved: ", result);
+    scrohla.quit();
+  });
 
+});
 
-scrohla.quit();
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const webdriver = require('selenium-webdriver');
-const logger = require('winston');
+const config = require('../config-app.json');
 
 exports.Core = class {
 
@@ -18,22 +18,15 @@ exports.Core = class {
 
   configureChrome(builder){
 
-    let defaultArgs = [ 
-      "--start-maximized",
-      "--hide-scrollbars",
-      "--headless",
-      "--disable-gpu"
-    ];
+    let defaultArgs = config.browser.args;
 
-    if(this.params.resetArgs){
+    if(config.browser.ignoreArgs){
       defaultArgs = [];
     }
 
     if(this.params.args){
       defaultArgs = defaultArgs.concat(this.params.args)
     }
-
-    logger.info("Args: ", defaultArgs);
 
     const chromeCapabilities = webdriver.Capabilities.chrome();
     chromeCapabilities.set('chromeOptions', { "args": defaultArgs });
@@ -49,8 +42,8 @@ exports.Core = class {
     return this.driver;
   }
 
-  getLogger(){
-    return logger;
+  getConfig(){
+    return config;
   }
 
 }

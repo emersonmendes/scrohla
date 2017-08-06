@@ -1,0 +1,18 @@
+{
+  "browser" : {
+    "args" : [ 
+      "--start-maximized",
+      "--hide-scrollbars",
+      "--headless",
+      "--disable-gpu"
+    ],
+    "ignoreArgs" : false
+  },
+  "screenshot" : { 
+    "path" : "/home/emerson/Downloads",
+    "name" : "screenshot.png"
+  },
+  "timeout" : {
+    "elementLocated" : 10000
+  }
+}

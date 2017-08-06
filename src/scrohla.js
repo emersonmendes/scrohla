@@ -3,17 +3,20 @@
 const fs = require('fs');
 const { Core } = require('./core');
 const TIMEOUT = 5000;
+const logger = require('winston');
 
 exports.Scrohla = class {
 
   constructor(params){
     this.params = params;
-    this.core = new Core(this.params);
-    this.logger = this.core.getLogger();
+    const core = new Core(params);
+    this.driver = core.getDriver();
+    this.webdriver = core.getWebdriver();
+    this.config = core.getConfig();
+    this.By = this.webdriver.By;
   }
 
   getElement(xpath){
-    // return this.driver.findElement(this.By.xpath(xpath));
     return this.waitFor(xpath).then( elm => elm );
   }
 
@@ -36,7 +39,7 @@ exports.Scrohla = class {
   waitFor(xpath){
     return this.driver.wait(
       this.until().elementLocated(this.By.xpath(xpath)), 
-      this.params.timeout || TIMEOUT
+      this.config.timeout.elementLocated || TIMEOUT
     );
   }
 
@@ -44,25 +47,37 @@ exports.Scrohla = class {
     return this.webdriver.until;
   }
 
+  flow(callback){
+    this.webdriver.promise.controlFlow().execute(callback);
+  }
+
   quit(){
     this.driver.quit();
   }
 
-  takeScreenshot(){
+  takeScreenshot(cb){
+
+    const screenshot = this.config.screenshot;
     
-    if(!this.params.screenshotPath){
-      this.logger.warn("Cannot take screenshot :( , Please, set screenshotPath param!");
+    if(!screenshot.path){
+      logger.warn("Couldn't take screenshot :( , Please, set screenshot path config!");
+      cb && cb();
       return;
     }
 
     this.driver.takeScreenshot().then((data) => {
-      const path = this.params.screenshotPath + "/" + new Date().getTime() + "_screenshot.png";
+
+      const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
+
       fs.writeFile(path, data.replace(/^data:image\/png;base64,/,''), 'base64', (err) => {
         if(err){ 
+          cb && cb(err);
           throw err;
         }
-        this.logger.info("Screenshot saved in: " + path);
+        logger.info("Screenshot saved in: " + path);
+        cb && cb();
       });
+
     });
 
   }
@@ -70,13 +85,10 @@ exports.Scrohla = class {
   start(){  
     const target = this.params.target;
     if(!target){
-      this.logger.warn("Target is required!"); return;
+      logger.warn("Target is required!"); return;
     }
-    this.logger.info("Initializing Scrohla ...");
-    this.driver = this.core.getDriver();
-    this.webdriver = this.core.getWebdriver();
-    this.By = this.webdriver.By;
-    this.logger.info("Target: ",target);
+    logger.info("Initializing Scrohla ...");
+    logger.info("Target: ",target);
     this.goTo(target);
   }
 
