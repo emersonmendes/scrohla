@@ -14,7 +14,6 @@
   "scripts": {
     "start": "node index.js",
     "start-debug": "node --inspect-brk index.js",
-    "start-db": "node db.js",
     "test": "mocha"
   }
 }
