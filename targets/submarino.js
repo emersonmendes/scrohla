@@ -1,7 +1,7 @@
 'use strict';
 
 const target = {
-  url : "https://www.submarino.com.br/produto/19998264",
+  url : "https://www.submarino.com.br/produto/24192983",
   key : "submarino_products",
   execute : collect
 };
@@ -10,7 +10,7 @@ function collect(scrohla, sendResult){
 
   let result = {
     url: target.url,
-    date : new Date()
+    date : new Date().getTime()
   };
 
   scrohla.start();
@@ -29,7 +29,7 @@ function collect(scrohla, sendResult){
 
   scrohla.takeScreenshot();
 
-  scrohla.flow(()=>{
+  scrohla.flow( () => {
     sendResult(result);
   });
 
