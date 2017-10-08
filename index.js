@@ -20,8 +20,6 @@ target.execute(scrohla, (result) => {
 
   logger.info(result);
   
-  scrohla.quit();
-  
   //const db = new DataBase();
   // db.save(target.key, result,() => {
   //   logger.info("Saved: ", result);

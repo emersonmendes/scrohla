@@ -3,8 +3,7 @@
 const logger = require('winston');
 
 const target = {
-    url : "http://phantomjs.org/",
-    key : "",
+    url : "https://www.whatismybrowser.com/detect/what-is-my-user-agent",
     execute : collect
 };
 
@@ -14,14 +13,15 @@ function collect(scrohla, sendResult){
 
     scrohla.start();
 
-    scrohla.getText("//div[@class='grid_7 alpha']//h1").then( text => {
-        result.phantomInfo = text;
-        logger.info(text);
+    scrohla.getText("//div[@class='content']//div[@class='detected_result']//a").then( userAgent => {
+        result.userAgent = userAgent;
     });
 
     scrohla.flow( () => {
         sendResult(result);
     });
+
+    scrohla.quit();
 
 }    
 

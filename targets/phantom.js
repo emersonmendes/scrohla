@@ -3,7 +3,7 @@
 const logger = require('winston');
 
 const target = {
-    url : "https://google.com/",
+    url : "http://phantomjs.org/",
     key : "",
     execute : collect
 };
@@ -14,16 +14,17 @@ function collect(scrohla, sendResult){
 
     scrohla.start();
 
-    scrohla.takeScreenshot();
-
-    scrohla.getText("//div[@class='content']").then( text => {
-        result.text = text;
+    scrohla.getText("//div[@class='grid_7 alpha']//h1").then( text => {
+        result.phantomInfo = text;
         logger.info(text);
+        scrohla.takeScreenshot();
     });
 
     scrohla.flow( () => {
         sendResult(result);
     });
+
+    scrohla.quit();
 
 }    
 

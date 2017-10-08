@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const { Core } = require('./core');
-const TIMEOUT = 5000;
 const logger = require('winston');
 
 exports.Scrohla = class {
@@ -14,6 +13,14 @@ exports.Scrohla = class {
     this.webdriver = core.getWebdriver();
     this.config = core.getConfig();
     this.By = this.webdriver.By;
+  }
+
+  getCookies(){
+    return this.driver.manage().getCookies(); 
+  }
+
+  addCookie(key, value){
+    this.driver.manage().addCookie(key,value);
   }
 
   getElement(xpath){
@@ -32,14 +39,14 @@ exports.Scrohla = class {
     this.driver.get(target);
   }
 
-  getText(xpath){
-    return this.waitFor(xpath).then( elm => elm.getText() );
+  getText(xpath, time){
+    return this.waitFor(xpath, time).then( elm => elm.getText() );
   }
 
-  waitFor(xpath){
+  waitFor(xpath, time){
     return this.driver.wait(
       this.until().elementLocated(this.By.xpath(xpath)), 
-      this.config.timeout.elementLocated || TIMEOUT
+      time || this.config.timeout.elementLocated
     );
   }
 
@@ -53,6 +60,10 @@ exports.Scrohla = class {
 
   quit(){
     this.driver.quit();
+  }
+
+  executeJs(script){
+    return this.driver.executeScript(script);
   }
 
   takeScreenshot(cb){
