@@ -1,9 +1,16 @@
 'use strict';
 
+//const { DataBase } = require('./src/db'); 
+
 const { Scrohla } = require('./src/scrohla');
-const { target } = require('./targets/submarino');
-const { DataBase } = require('./src/db'); 
 const logger = require('winston');
+const targetArg = process.argv[2];
+
+if(!targetArg){
+  throw Error("informe a target. Ex: npm start phantom-site");
+}
+
+const { target } = require('./targets/' + targetArg);
 
 const scrohla = new Scrohla({
   target: target.url
@@ -11,12 +18,15 @@ const scrohla = new Scrohla({
 
 target.execute(scrohla, (result) => {
 
-  const db = new DataBase();
+  logger.info(result);
   
-  db.save(target.key, result,() => {
-    logger.info("Saved: ", result);
-    scrohla.quit();
-  });
+  scrohla.quit();
+  
+  //const db = new DataBase();
+  // db.save(target.key, result,() => {
+  //   logger.info("Saved: ", result);
+  //   scrohla.quit();
+  // });
 
 });
 

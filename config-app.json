@@ -1,12 +1,23 @@
 {
   "browser" : {
-    "args" : [ 
-      "--start-maximized",
-      "--hide-scrollbars",
-      "--headless",
-      "--disable-gpu"
-    ],
-    "ignoreArgs" : false
+    "name" : "phantom",
+    "ignoreArgs" : false,
+    "userAgent" : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
+    "chrome" : {
+      "args" : [ 
+        "--start-maximized",
+        "--hide-scrollbars"
+      ]
+    },
+    "phantom" : {
+      "binaryPath" : "/home/emerson/development/other/phantomjs",
+      "args" : [
+        "--debug=true",
+        "--webdriver-logfile=phantom-webdriver.log",
+        "--webdriver-loglevel=DEBUG",
+        "--web-security=true"
+      ]
+    }
   },
   "screenshot" : { 
     "path" : "/home/emerson/Downloads",
