@@ -3,8 +3,7 @@
 const logger = require('winston');
 
 const target = {
-    url : "https://cadastro.saude.gov.br/cadsusweb/lxxxx",
-    key : "",
+    url : "https://cadastro.saude.gov.br/cadsusweb/login.jsp",
     execute : collect
 };
 
@@ -14,19 +13,26 @@ function collect(scrohla, sendResult){
 
     scrohla.start();
 
-    scrohla.waitFor("//iframe[@name='clntcap_frame']");
+    scrohla.executeJs(function(){
+        document.cookie = "brav=ad; dtPC=-; dtLatC=1;";
+        return "Deu certo";
+    }).then( text => {
+        logger.info(text);
+    });
 
     scrohla.takeScreenshot();
 
-    scrohla.getText("//div[@class='logo']",30000).then( text => {
+    scrohla.getText("//div[@class='logo']",120000).then( text => {
         result.text = text;
+    }).catch(() => {
+        scrohla.takeScreenshot();
     });
 
     scrohla.flow( () => {
         sendResult(result);
     });
 
-    //scrohla.quit();
+    scrohla.quit();
 
 }    
 

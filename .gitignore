@@ -3,3 +3,4 @@ package-lock.json
 config-db.json
 .vscode/
 webdriver.log
+.tmp

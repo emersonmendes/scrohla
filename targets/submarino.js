@@ -33,7 +33,7 @@ function collect(scrohla, sendResult){
     sendResult(result);
   });
 
-  //scrohla.quit();
+  scrohla.quit();
 
 }
 

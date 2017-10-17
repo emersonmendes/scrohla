@@ -43,11 +43,18 @@ exports.Scrohla = class {
     return this.waitFor(xpath, time).then( elm => elm.getText() );
   }
 
-  waitFor(xpath, time){
+  getAttrib(xpath, attrib, time){
+    return this.waitFor(xpath, time).then( elm => elm.getAttribute(attrib) );
+  }
+
+  waitFor(xpath, time = this.config.timeout.elementLocated){
     return this.driver.wait(
-      this.until().elementLocated(this.By.xpath(xpath)), 
-      time || this.config.timeout.elementLocated
+      this.until().elementLocated(this.By.xpath(xpath)), time
     );
+  }
+
+  getCurrentURL(){
+    return this.driver.getCurrentUrl();
   }
 
   until(){
