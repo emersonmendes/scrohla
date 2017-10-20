@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const webdriver = require('selenium-webdriver');
-const logger = require('winston');
-const config = require('../config-app.json');
+const webdriver = require("selenium-webdriver");
+const logger = require("winston");
+const config = require("../config-app.json");
 
 exports.Core = class {
 
@@ -37,15 +37,15 @@ exports.Core = class {
     caps.set("phantomjs.page.settings.userAgent", config.browser.userAgent);
     
     builder.withCapabilities(caps);
-    builder.forBrowser('phantomjs')
+    builder.forBrowser("phantomjs");
     this.driver = builder.build();
 
   }
 
   configureChrome(builder){
 
-    const chrome = require('selenium-webdriver/chrome');
-    chrome.setDefaultService(new chrome.ServiceBuilder(require('chromedriver').path).build());
+    const chrome = require("selenium-webdriver/chrome");
+    chrome.setDefaultService(new chrome.ServiceBuilder(require("chromedriver").path).build());
     
     let defaultArgs = config.browser.chrome.args;
     defaultArgs.push("--user-agent='" + config.browser.userAgent + "'");
@@ -67,7 +67,7 @@ exports.Core = class {
     }
     
     const caps = webdriver.Capabilities.chrome();
-    caps.set('chromeOptions', { "args": defaultArgs });
+    caps.set("chromeOptions", { "args": defaultArgs });
     builder.withCapabilities(caps);
     this.driver = builder.build();
   
@@ -85,4 +85,4 @@ exports.Core = class {
     return config;
   }
 
-}
+};

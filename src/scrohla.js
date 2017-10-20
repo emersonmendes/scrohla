@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const { Core } = require('./core');
-const logger = require('winston');
+const fs = require("fs");
+const logger = require("winston");
+const { Core } = require("./core");
 
 exports.Scrohla = class {
 
@@ -15,24 +15,12 @@ exports.Scrohla = class {
     this.By = this.webdriver.By;
   }
 
-  getCookies(){
-    return this.driver.manage().getCookies(); 
-  }
-
-  addCookie(key, value){
-    this.driver.manage().addCookie(key,value);
-  }
-
-  getElement(xpath){
-    return this.waitFor(xpath).then( elm => elm );
-  }
-
   type(text,xpath){
-     getElement(xpath).sendKeys(text);
+    this.waitFor(xpath).then( elm => elm.sendKeys(text) );
   }
 
   click(xpath){
-    getElement(xpath).click();
+    this.waitFor(xpath).then( elm => elm.click() );
   }
 
   goTo(target){
@@ -73,12 +61,16 @@ exports.Scrohla = class {
     return this.driver.executeScript(script);
   }
 
+  waitPageLoad(){
+    this.driver.manage().timeouts().pageLoadTimeout(30000);
+  }
+
   takeScreenshot(cb){
 
     const screenshot = this.config.screenshot;
     
     if(!screenshot.path){
-      logger.warn("Couldn't take screenshot :( , Please, set screenshot path config!");
+      logger.warn("Couldnt take screenshot :( , Please, set screenshot path config!");
       cb && cb();
       return;
     }
@@ -87,7 +79,7 @@ exports.Scrohla = class {
 
       const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
 
-      fs.writeFile(path, data.replace(/^data:image\/png;base64,/,''), 'base64', (err) => {
+      fs.writeFile(path, data.replace(/^data:image\/png;base64,/,""), "base64", (err) => {
         if(err){ 
           cb && cb(err);
           throw err;
@@ -100,6 +92,10 @@ exports.Scrohla = class {
 
   }
 
+  getDriver(){
+    return this.driver;
+  }
+
   start(){  
     const target = this.params.target;
     if(!target){
@@ -110,4 +106,4 @@ exports.Scrohla = class {
     this.goTo(target);
   }
 
-}
+};
