@@ -5,7 +5,7 @@ const logger = require('winston');
 const targetArg = process.argv[2];
 
 if(!targetArg){
-  throw Error("informe a target. Ex: npm start phantom-site");
+  throw Error("informe a target. Ex: npm start submarino");
 }
 
 const { target } = require('./targets/' + targetArg);
