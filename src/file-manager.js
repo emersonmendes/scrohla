@@ -11,12 +11,16 @@ exports.FileManager = class {
         fs.writeFile(filePath,data);
     }
 
-    static readFile(filePath,callback){
+    static readFile(filePath, callback){
         fs.readFile(filePath,"utf8", (error, data) => callback(data));
     }
 
-    static existsFile(filePath, callback){
-        fs.exists(filePath, callback);
+    static existsFile(filePath){
+        return fs.existsSync(filePath);
+    }
+
+    static clean(filePath){
+        fs.unlink(filePath);
     }
 
 };

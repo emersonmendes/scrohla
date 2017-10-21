@@ -11,11 +11,13 @@ exports.Scrohla = class {
     const core = new Core(params);
     this.driver = core.getDriver();
     this.webdriver = core.getWebdriver();
+    this.controlFlow = this.webdriver.promise.controlFlow();
     this.config = core.getConfig();
     this.By = this.webdriver.By;
+    this.Key = this.webdriver.Key;
   }
 
-  type(text,xpath){
+  type(text, xpath){
     this.waitFor(xpath).then( elm => elm.sendKeys(text) );
   }
 
@@ -29,6 +31,10 @@ exports.Scrohla = class {
 
   getText(xpath, time){
     return this.waitFor(xpath, time).then( elm => elm.getText() );
+  }
+
+  findElements(xpath){
+    return this.driver.findElements(this.By.xpath(xpath));
   }
 
   getAttrib(xpath, attrib, time){
@@ -50,7 +56,7 @@ exports.Scrohla = class {
   }
 
   flow(callback){
-    this.webdriver.promise.controlFlow().execute(callback);
+   this.controlFlow.execute(callback);
   }
 
   quit(){
@@ -61,35 +67,21 @@ exports.Scrohla = class {
     return this.driver.executeScript(script);
   }
 
+  reload(){
+    logger.info("Reloading ...");
+    this.driver.navigate().refresh();
+  }
+
+  sleep(ms){
+    this.driver.sleep(ms);
+  }
+
   waitPageLoad(){
     this.driver.manage().timeouts().pageLoadTimeout(30000);
   }
 
-  takeScreenshot(cb){
-
-    const screenshot = this.config.screenshot;
-    
-    if(!screenshot.path){
-      logger.warn("Couldnt take screenshot :( , Please, set screenshot path config!");
-      cb && cb();
-      return;
-    }
-
-    this.driver.takeScreenshot().then((data) => {
-
-      const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
-
-      fs.writeFile(path, data.replace(/^data:image\/png;base64,/,""), "base64", (err) => {
-        if(err){ 
-          cb && cb(err);
-          throw err;
-        }
-        logger.info("Screenshot saved in: " + path);
-        cb && cb();
-      });
-
-    });
-
+  getKey(){
+    return this.Key;
   }
 
   getDriver(){
@@ -105,5 +97,32 @@ exports.Scrohla = class {
     logger.info("Target: ",target);
     this.goTo(target);
   }
+
+  takeScreenshot(cb){
+    
+        const screenshot = this.config.screenshot;
+        
+        if(!screenshot.path){
+          logger.warn("Couldnt take screenshot :( , Please, set screenshot path config!");
+          cb && cb();
+          return;
+        }
+    
+        this.driver.takeScreenshot().then((data) => {
+    
+          const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
+    
+          fs.writeFile(path, data.replace(/^data:image\/png;base64,/,""), "base64", (err) => {
+            if(err){ 
+              cb && cb(err);
+              throw err;
+            }
+            logger.info("Screenshot saved in: " + path);
+            cb && cb();
+          });
+    
+        });
+    
+      }
 
 };
