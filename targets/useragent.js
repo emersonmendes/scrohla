@@ -1,6 +1,4 @@
-'use strict';
-
-const logger = require('winston');
+"use strict";
 
 const target = {
     url : "https://www.whatismybrowser.com/detect/what-is-my-user-agent",
@@ -9,9 +7,11 @@ const target = {
 
 function collect(scrohla, sendResult){
 
-    let result = {};
-
     scrohla.start();
+
+    let result = {
+        url : scrohla.getCurrentURL()
+    };
 
     scrohla.getText("//div[@class='content']//div[@class='detected_result']//a").then( userAgent => {
         result.userAgent = userAgent;

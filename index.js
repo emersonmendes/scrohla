@@ -16,13 +16,16 @@ const scrohla = new Scrohla({
 });
 
 const cleanCookies = function(){
-  new CookieManager(target.username, scrohla.getDriver()).clean();
+  new CookieManager(
+    target.auth.host.concat("-").concat(target.auth.user),
+    scrohla.getDriver()
+  ).clean();
 };
 
 try {
   target.execute(scrohla, (result) => logger.info(result) );
 } catch(err){
-  cleanCookies();
+  target.auth && cleanCookies();
   logger.error("Erro interno :( Details: ", err);
 }
 

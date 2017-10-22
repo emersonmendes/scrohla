@@ -1,41 +1,34 @@
 "use strict";
 
-const { CookieManager } = require("../src/cookie-manager");
 const logger = require("winston");
+const credentials = require("./credentials.json").instagram;
 
 const target = {
     url : "https://www.instagram.com/",
-    username : "cruliano.silva@mail.com",
-    pass : "crulianosilva2017",
+    auth : {
+        host : "instagram",
+        user : credentials.user,
+        pass : credentials.password
+    },
     execute : collect
 };
 
 function doLogin(scrohla){
     scrohla.click("//*[@class='_b93kq']");
-    scrohla.type(target.username, "//*[@class='_ph6vk _o716c']");
-    scrohla.type(target.pass, "//*[@type='password']");
-    scrohla.click("//button");
+    scrohla.authenticate(target.auth);
+    scrohla.click("//*[@class='_qv64e _gexxb _4tgw8 _njrw0']",false);
 }
 
 function collect(scrohla, sendResult){
 
-    const cookieManager = new CookieManager(
-        target.username,
-        scrohla.getDriver()
-    );
-
-    let result = {x:"teste"};
+    let result = { 
+        "socialMedia" :  target.auth.host
+    };
 
     scrohla.start();
 
     scrohla.flow( () => {
-        if(cookieManager.exists()){
-            cookieManager.inject(() => scrohla.reload());
-        } else {
-            doLogin(scrohla);
-            scrohla.waitFor("//*[@class='js logged-in client-root']")
-                .then(() => cookieManager.store() );
-        }
+        doLogin(scrohla);
     });
 
     scrohla.goTo("https://www.instagram.com/flamengo");

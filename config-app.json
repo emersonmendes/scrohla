@@ -7,11 +7,6 @@
       "args" : [ 
         "--start-maximized",
         "--hide-scrollbars"
-      ],
-      "noUsedArgs" : [
-        "--user-data-dir=/home/emerson/development/other/phantomjs_dir/user-data-chrome",
-        "--disable-renderer-backgrounding",
-        "--disable-extensions"
       ]
     },
     "phantom" : {
@@ -19,20 +14,6 @@
       "args" : [
         "--web-security=false",
         "--ignore-ssl-errors=true"
-      ],
-      "noUsedArgs" : [
-        "--cookies-file=/tmp/cookies.txt",
-        "--webdriver-logfile=webdriver.log",
-        "--webdriver-loglevel=DEBUG",
-        "--debug=true",
-        "--remote-debugger-port=9000",
-        "--cookies-file=/home/emerson/development/other/phantomjs_dir/cookies.txt",
-        "--local-storage-path=/home/emerson/development/other/phantomjs_dir/user-data-phantom",
-        "--local-storage-quota=/home/emerson/development/other/phantomjs_dir/user-data-phantom",
-        "--offline-storage-path=/home/emerson/development/other/phantomjs_dir/user-data-phantom",
-        "--offline-storage-quota=/home/emerson/development/other/phantomjs_dir/user-data-phantom",
-        "--disk-cache-path=/home/emerson/development/other/phantomjs_dir/user-data-phantom",
-        "--disk-cache=true"
       ]
     }
   },
