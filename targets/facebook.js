@@ -3,7 +3,7 @@
 const credentials = require("./credentials.json").facebook;
 
 const target = {
-    url : "https://www.facebook.com/",
+    url : "https://www.facebook.com/pg/FlamengoOficial",
     auth :{ 
         user : credentials.user,
         pass : credentials.password
@@ -20,8 +20,6 @@ function collect(scrohla, sendResult){
 
     scrohla.waitFor("//*[@data-click='profile_icon']");  
    
-    scrohla.goTo(target.url + "/pg/FlamengoOficial");
-    
     scrohla.getText("//h1[@id='seo_h1_tag']").then( text => {
         result.fullName = text;
     });
