@@ -27,9 +27,9 @@ exports.Scrohla = class {
   authenticate(data) {
 
     const cookies = this.params.targetName.concat("-").concat(data.user);
-
+  
     const cookieManager = new CookieManager(cookies,this.driver);
-
+    
     if (cookieManager.exists()) {
       logger.info("using cookies: %s",cookies);
       this.waitPageLoad();
@@ -65,7 +65,7 @@ exports.Scrohla = class {
   }
 
   goTo(url) {
-    this.driver.get(url);
+    return this.driver.get(url);
   }
 
   getText(xpath, time) {

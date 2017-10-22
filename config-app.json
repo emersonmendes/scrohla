@@ -6,7 +6,8 @@
       "headless" : false,
       "args" : [ 
         "--start-maximized",
-        "--hide-scrollbars"
+        "--hide-scrollbars",
+        "--disable-notifications"
       ]
     },
     "phantom" : {

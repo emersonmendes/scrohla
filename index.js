@@ -24,7 +24,9 @@ const cleanCookies = function(){
 };
 
 try {
-  target.execute(scrohla, (result) => logger.info(JSON.stringify(result,null,4)) );
+  target.execute(scrohla, (result) =>  { 
+    logger.info(JSON.stringify(result,null,4));
+  });
 } catch(err){
   target.auth && cleanCookies();
   logger.error("Erro interno :( Details: ", err);

@@ -12,12 +12,28 @@ const target = {
 };
 
 function collect(scrohla, sendResult){
-    let result = { 
-        "socialMedia" :  target.auth.host
-    };
+
     scrohla.start();
     scrohla.authenticate(target.auth);
-    scrohla.flow(() => sendResult(result));
+        
+    let result = {};
+
+    scrohla.waitFor("//*[@data-click='profile_icon']");  
+   
+    scrohla.goTo(target.url + "/pg/FlamengoOficial");
+    
+    scrohla.getText("//h1[@id='seo_h1_tag']").then( text => {
+        result.fullName = text;
+    });
+
+    scrohla.getText("//h1[@id='seo_h1_tag']").then( text => {
+        result.fullName = text;
+    });
+
+    scrohla.flow(() => { 
+        sendResult(result);
+    });
+
 }
 
 exports.target = target;
