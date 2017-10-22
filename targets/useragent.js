@@ -9,9 +9,7 @@ function collect(scrohla, sendResult){
 
     scrohla.start();
 
-    let result = {
-        url : scrohla.getCurrentURL()
-    };
+    let result = {};
 
     scrohla.getText("//div[@class='content']//div[@class='detected_result']//a").then( userAgent => {
         result.userAgent = userAgent;

@@ -5,7 +5,6 @@ const credentials = require("./credentials.json").facebook;
 const target = {
     url : "https://www.facebook.com/",
     auth :{ 
-        host : "facebook",
         user : credentials.user,
         pass : credentials.password
     },

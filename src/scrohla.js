@@ -26,7 +26,7 @@ exports.Scrohla = class {
 
   authenticate(data) {
 
-    const cookies = data.host.concat("-").concat(data.user);
+    const cookies = this.params.targetName.concat("-").concat(data.user);
 
     const cookieManager = new CookieManager(cookies,this.driver);
 
@@ -64,8 +64,8 @@ exports.Scrohla = class {
       });
   }
 
-  goTo(target) {
-    this.driver.get(target);
+  goTo(url) {
+    this.driver.get(url);
   }
 
   getText(xpath, time) {
@@ -132,13 +132,13 @@ exports.Scrohla = class {
   }
 
   start() {
-    const target = this.params.target;
-    if (!target) {
+    const targetURL = this.params.targetURL;
+    if (!targetURL) {
       logger.warn("Target is required!"); return;
     }
     logger.info("Initializing Scrohla ...");
-    logger.info("Target: ", target);
-    this.goTo(target);
+    logger.info("Target url: ", targetURL);
+    this.goTo(targetURL);
   }
 
   takeScreenshot(cb) {

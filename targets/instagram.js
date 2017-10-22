@@ -6,7 +6,6 @@ const credentials = require("./credentials.json").instagram;
 const target = {
     url : "https://www.instagram.com/",
     auth : {
-        host : "instagram",
         user : credentials.user,
         pass : credentials.password
     },
