@@ -4,33 +4,28 @@ const logger = require("winston");
 const credentials = require("./credentials.json").instagram;
 
 const target = {
-    url : "https://www.instagram.com/",
-    auth : {
-        user : credentials.user,
-        pass : credentials.password
-    },
+    url : "https://www.instagram.com/flamengo",
+    loginURL : "https://www.instagram.com/accounts/login",
     execute : collect
 };
 
-function doLogin(scrohla){
-    scrohla.click("//*[@class='_b93kq']");
-    scrohla.authenticate(target.auth);
-    scrohla.click("//*[@class='_qv64e _gexxb _4tgw8 _njrw0']",false);
-}
-
 function collect(scrohla, sendResult){
 
-    let result = { 
-        "socialMedia" :  target.auth.host
-    };
+    let result = {};
 
-    scrohla.start();
-
-    scrohla.flow( () => {
-        doLogin(scrohla);
+    scrohla.authenticate({
+        loginURL: target.loginURL,
+        user :{ 
+            xpath : "(//input[ @name='username' ])[1]", 
+            data : credentials.user
+        },
+        pass : { 
+            xpath : "(//input[@type='password'])[1]", 
+            data : credentials.pass
+        }
     });
 
-    scrohla.goTo("https://www.instagram.com/flamengo");
+    scrohla.start();
 
     scrohla.getAttrib("//article//header//*[contains(@href,'followers')]//span","title").then( attrib => {
         result.followers = Number(attrib.replace(new RegExp(",", "g"),""));
@@ -62,7 +57,7 @@ function collect(scrohla, sendResult){
         sendResult(result);
     });
 
-    //scrohla.quit();
+    scrohla.quit();
 
 }    
 

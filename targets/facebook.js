@@ -4,19 +4,27 @@ const credentials = require("./credentials.json").facebook;
 
 const target = {
     url : "https://www.facebook.com/pg/FlamengoOficial",
-    auth :{ 
-        user : credentials.user,
-        pass : credentials.password
-    },
+    loginURL : "https://www.facebook.com/",
     execute : collect
 };
 
 function collect(scrohla, sendResult){
 
-    scrohla.start();
-    scrohla.authenticate(target.auth);
-        
     let result = {};
+
+    scrohla.authenticate({
+        loginURL: target.loginURL,
+        user : { 
+            xpath : "(//input[ @type='email' ])[1]", 
+            data : credentials.user
+        },
+        pass : { 
+            xpath : "(//input[@type='password'])[1]", 
+            data : credentials.pass
+        }
+    });
+    
+    scrohla.start();       
 
     scrohla.waitFor("//*[@data-click='profile_icon']");  
    
@@ -31,6 +39,8 @@ function collect(scrohla, sendResult){
     scrohla.flow(() => { 
         sendResult(result);
     });
+
+    scrohla.quit();
 
 }
 

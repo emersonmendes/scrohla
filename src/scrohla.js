@@ -19,12 +19,14 @@ exports.Scrohla = class {
   }
 
   doLogin(user, pass) {
-    this.type(user, "(//input[@type='email' or @name='username'])[1]");
-    this.type(pass, "(//input[@type='password'])[1]");
-    this.submit("(//*[@type='password'])[1]//ancestor::form");
+    this.type(user.data, user.xpath);
+    this.type(pass.data, pass.xpath);
+    this.submit( pass.xpath + "//ancestor::form");
   }
 
   authenticate(data) {
+
+    this.goTo(data.loginURL);
 
     const cookies = this.params.targetName.concat("-").concat(data.user);
   

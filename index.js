@@ -4,6 +4,7 @@ const { Scrohla } = require("./src/scrohla");
 const { CookieManager } = require("./src/cookie-manager");
 const logger = require("winston");
 const targetName = process.argv[2];
+const targetUrl = process.argv[3];
 
 if(!targetName){
   throw Error("informe a target. Ex: npm start submarino");
@@ -12,7 +13,7 @@ if(!targetName){
 const { target } = require(`./targets/${targetName}`);
 
 const scrohla = new Scrohla({
-  targetURL: target.url,
+  targetURL: targetUrl || target.url,
   targetName: targetName
 });
 
