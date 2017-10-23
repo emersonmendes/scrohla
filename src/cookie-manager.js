@@ -2,7 +2,7 @@
 
 const path = require("path");
 const config = require("../config-app.json");
-const { FileManager } = require("./file-manager");
+const fs = require("fs");
 const COOKIE_SEPARATOR = ";";
 
 exports.CookieManager = class {
@@ -20,16 +20,16 @@ exports.CookieManager = class {
                     .concat(JSON.stringify(cookie))
                     .concat(COOKIE_SEPARATOR);
             }
-            FileManager.writeFile(this.cookiesFile, cookiesStr.slice(0,-1));
+            fs.writeFile(this.cookiesFile, cookiesStr.slice(0,-1));
         }); 
     }
 
     exists(){
-        return FileManager.existsFile(this.cookiesFile);
+        return fs.existsSync(this.cookiesFile);
     }
 
     inject(callback){
-        FileManager.readFile(this.cookiesFile, data => {
+        fs.readFile(this.cookiesFile,"utf8", (error, data) => {
             for (const value of data.split(COOKIE_SEPARATOR)) {
                 const cookie = JSON.parse(value);
                 this.driver.manage().addCookie({
@@ -46,7 +46,7 @@ exports.CookieManager = class {
     }
 
     clean(){
-        this.exists() && FileManager.clean(this.cookiesFile);
+        this.exists() && fs.unlink(this.cookiesFile);
     }
 
 };

@@ -24,11 +24,11 @@ exports.Scrohla = class {
     this.submit( pass.xpath + "//ancestor::form");
   }
 
-  authenticate(data) {
+  authenticate(auth) {
 
-    this.goTo(data.loginURL);
+    this.goTo(auth.loginURL);
 
-    const cookies = this.params.targetName.concat("-").concat(data.user);
+    const cookies = this.params.targetName.concat("-").concat(auth.user.data);
   
     const cookieManager = new CookieManager(cookies,this.driver);
     
@@ -38,7 +38,7 @@ exports.Scrohla = class {
       this.flow(() => cookieManager.inject(() => this.reload()));
     } else {
       logger.info("doing login ...");
-      this.doLogin(data.user, data.pass);
+      this.doLogin(auth.user, auth.pass);
       this.waitPageLoad();
       this.sleep(7000);
       this.flow(() => cookieManager.store());
@@ -143,13 +143,12 @@ exports.Scrohla = class {
     this.goTo(targetURL);
   }
 
-  takeScreenshot(cb) {
+  takeScreenshot() {
 
     const screenshot = this.config.screenshot;
 
     if (!screenshot.path) {
       logger.warn("Couldnt take screenshot :( , Please, set screenshot path config!");
-      cb && cb();
       return;
     }
 
@@ -159,11 +158,9 @@ exports.Scrohla = class {
 
       fs.writeFile(path, data.replace(/^data:image\/png;base64,/, ""), "base64", (err) => {
         if (err) {
-          cb && cb(err);
           throw err;
         }
         logger.info("Screenshot saved in: " + path);
-        cb && cb();
       });
 
     });

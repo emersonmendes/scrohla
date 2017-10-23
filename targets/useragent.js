@@ -15,6 +15,8 @@ function collect(scrohla, sendResult){
         result.userAgent = userAgent;
     });
 
+    scrohla.takeScreenshot();
+
     scrohla.flow( () => {
         sendResult(result);
     });
