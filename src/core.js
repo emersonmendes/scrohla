@@ -4,7 +4,7 @@ const webdriver = require("selenium-webdriver");
 const logger = require("winston");
 const config = require("../config-app.json");
 
-exports.Core = class {
+class Core {
 
   constructor(params){
     this.params = params;
@@ -54,7 +54,6 @@ exports.Core = class {
       
       defaultArgs.push("--headless");
       defaultArgs.push("--disable-gpu");
-      //defaultArgs.push("--remote-debugging-port=9222");
       defaultArgs.push("--no-sandbox");
 
       logger.info("chrome is in headless mode. args:");
@@ -85,4 +84,6 @@ exports.Core = class {
     return config;
   }
 
-};
+}
+
+module.exports.Core = Core;

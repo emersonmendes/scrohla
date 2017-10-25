@@ -5,7 +5,7 @@ const logger = require("winston");
 const { Core } = require("./core");
 const { CookieManager } = require("./cookie-manager");
 
-exports.Scrohla = class {
+class Scrohla {
 
   constructor(params) {
     this.params = params;
@@ -167,4 +167,6 @@ exports.Scrohla = class {
 
   }
 
-};
+}
+
+module.exports.Scrohla = Scrohla;

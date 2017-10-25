@@ -5,7 +5,7 @@ const config = require("../config-app.json");
 const fs = require("fs");
 const COOKIE_SEPARATOR = ";";
 
-exports.CookieManager = class {
+class CookieManager {
 
     constructor(fileName, driver){
         this.driver = driver;
@@ -49,4 +49,6 @@ exports.CookieManager = class {
         this.exists() && fs.unlink(this.cookiesFile);
     }
 
-};
+}
+
+module.exports.CookieManager = CookieManager;
