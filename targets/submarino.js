@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const target = {
   url : "https://www.submarino.com.br/produto/24192983",
