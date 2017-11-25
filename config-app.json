@@ -22,8 +22,5 @@
     "path" : "/home/emerson/Downloads",
     "name" : "screenshot.png"
   },
-  "timeout" : {
-    "elementLocated" : 10000
-  },
   "cookiesPath" : "/tmp/schrola/cookies"
 }

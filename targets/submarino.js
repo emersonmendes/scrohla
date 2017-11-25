@@ -1,7 +1,7 @@
 "use strict";
 
 const target = {
-  url : "https://www.submarino.com.br/produto/24192983",
+  url : "https://www.submarino.com.br/produto/9417912",
   key : "submarino_products",
   execute : collect
 };

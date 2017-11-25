@@ -18,6 +18,10 @@ class Scrohla {
     this.Key = this.webdriver.Key;
   }
 
+  log(text){
+    this.flow(() => logger.info(text));
+  }
+
   doLogin(user, pass) {
     this.type(user.data, user.xpath);
     this.type(pass.data, pass.xpath);
@@ -46,8 +50,9 @@ class Scrohla {
 
   }
 
-  type(text, xpath) {
-    this.waitFor(xpath).then(elm => elm.sendKeys(text));
+  type(text, xpath, time = 10000) {
+    this.waitForVisible(xpath, time);
+    this.findElement(xpath).sendKeys(text);
   }
 
   submit(xpath) {
@@ -78,13 +83,29 @@ class Scrohla {
     return this.driver.findElements(this.By.xpath(xpath));
   }
 
+  findElement(xpath) {
+    return this.driver.findElement(this.By.xpath(xpath));
+  }
+
   getAttrib(xpath, attrib, time) {
     return this.waitFor(xpath, time).then(elm => elm.getAttribute(attrib));
   }
 
-  waitFor(xpath, time = this.config.timeout.elementLocated) {
+  waitFor(xpath, time = 10000) {
     return this.driver.wait(
       this.until().elementLocated(this.By.xpath(xpath)), time
+    );
+  }
+
+  waitForVisible(xpath, time = 10000) {
+    return this.driver.wait(
+      this.until().elementIsVisible(this.waitFor(xpath,time)), time
+    );
+  }
+
+  waitForNotVisible(xpath, time = 10000) {
+    return this.driver.wait(
+      this.until().elementIsNotVisible(this.waitFor(xpath,time)), time
     );
   }
 
@@ -114,6 +135,7 @@ class Scrohla {
   }
 
   sleep(ms = 10000) {
+    this.flow(() => logger.info("sleeping for %s milliseconds",ms));
     this.driver.sleep(ms);
   }
 
