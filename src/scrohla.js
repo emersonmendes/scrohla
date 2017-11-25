@@ -18,7 +18,7 @@ class Scrohla {
     this.Key = this.webdriver.Key;
   }
 
-  log(text){
+  logInfo(text){
     this.flow(() => logger.info(text));
   }
 
@@ -50,8 +50,8 @@ class Scrohla {
 
   }
 
-  type(text, xpath, time = 10000) {
-    this.waitForVisible(xpath, time);
+  type(text, xpath) {
+    this.waitForVisible(xpath);
     this.findElement(xpath).sendKeys(text);
   }
 
@@ -60,14 +60,13 @@ class Scrohla {
   }
 
   click(xpath, required = true) {
-    this.waitFor(xpath)
+    this.waitForVisible(xpath);
+    this.findElement(xpath)
       .then(elm => elm.click())
       .catch(() => {
         const msg = "Não conseguiu achar o xpath: " + xpath;
-        if (required) {
+        if (required) 
           throw Error(msg);
-        }
-        logger.warn(msg);
       });
   }
 
