@@ -16,14 +16,21 @@ class Core {
     const builder = new webdriver.Builder();
     const browser = config.browser.name;
 
+    
     logger.info("Browser:",browser);
-
+    
     if("phantom" === browser){
       this.configurePhantom(builder);
     }else {
       this.configureChrome(builder);
     }
 
+    const resolution = config.browser.resolution;
+    this.driver.manage().window().setSize(
+      resolution.w, 
+      resolution.h
+    );
+    
   }
 
   configurePhantom(builder){

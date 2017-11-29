@@ -31,6 +31,8 @@ function collect(_scrohla, sendResult){
     scrohla.start();    
     scrohla.logInfo("Iniciando coleta...");
 
+    scrohla.takeScreenshot();
+    
     scrohla.flow(() => console.time("# Tempo Execução"));
     
     scrohla.click("(//*[@id='lista-redes']//*[contains(@class,'listagens-busca')]//li)[1]");
