@@ -20,7 +20,7 @@ function collect(_scrohla, sendResult){
    
     scrohla.start();    
     
-    scrohla.flow(() => console.timeEnd('# Tempo Execução'));
+    scrohla.flow(() => console.time('# Tempo Execução'));
     
     scrohla.click("(//*[@id='lista-redes']//*[contains(@class,'listagens-busca')]//li)[1]");
     scrohla.waitForNotVisible(modalLoadingXPATH); 
