@@ -35,24 +35,24 @@ function collect(_scrohla, sendResult){
     
     scrohla.flow(() => console.time("# Tempo Execução"));
     
-    scrohla.click("(//*[@id='lista-redes']//*[contains(@class,'listagens-busca')]//li)[1]");
+    scrohla.click("(//*[@id='lista-redes']//*[contains(@class,'listagens-busca')]//li//a)[1]");
     scrohla.waitForNotVisible(modalLoadingXPATH); 
 
     scrohla.type(state, "//input[@id='filtroEstado']");
     
-    scrohla.click("(//*[@id='lista-estado']//*[contains(@class,'listagens-busca')]//li)[1]");
+    scrohla.click("(//*[@id='lista-estado']//*[contains(@class,'listagens-busca')]//li//a)[1]");
     scrohla.waitForNotVisible(modalLoadingXPATH); 
 
     scrohla.type(city, "//input[@id='filtroCidade']");
 
-    scrohla.click("(//*[@id='lista-cidade']//*[contains(@class,'listagens-busca')]//li)[1]");
+    scrohla.click("(//*[@id='lista-cidade']//*[contains(@class,'listagens-busca')]//li//a)[1]");
 
     scrohla.click("//*[@id='lista-tipo-pesquisa' and contains(@class,'ativo')]//table//input[contains(@id,'formInicio:tipoPesquisa:0')]");
 
     scrohla.getAttrib("//div[@id='captchaContainer']//img","src").then(txt => captchaImageURL = txt);
 
     scrohla.flow(() => createResolveCaptchaService());
-
+    
     scrohla.click(itemTipoEstabelecimentoXPATH);
     scrohla.waitForNotVisible(modalLoadingXPATH); 
     
@@ -117,6 +117,7 @@ function resolveCaptcha(res, req, resolve, reject){
 
     !captchaText && reject();
 
+    scrohla.logInfo(`Texto "${captchaText}" recebido...`);
     scrohla.type(captchaText, "//input[contains(@id,'formInicio:txtCaptchaBusca')]");
 
     scrohla.click("//*[@id='btnContinuar']//a");
@@ -126,11 +127,12 @@ function resolveCaptcha(res, req, resolve, reject){
         scrohla.logInfo("Digitou certo miseravi!");
         resolve(); 
     }).catch(() => {
-        scrohla.logInfo(`O texto: ${captchaText} está errado, tente novamente`);
+        scrohla.takeScreenshot();
+        scrohla.logInfo(`O texto: ${captchaText} está errado, atualize a imagem e tente novamente`);
     });
     
     res.setHeader("Content-Type", "text/plain");
-    res.end("O texto foi enviado com sucesso!");
+    res.end("O texto foi enviado com sucesso, aguarde a resposta...");
 
 }
 

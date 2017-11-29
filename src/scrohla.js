@@ -176,6 +176,10 @@ class Scrohla {
     this.goTo(targetURL);
   }
 
+  takeScreenshotBase64(){
+    return this.driver.takeScreenshot();
+  }
+
   takeScreenshot() {
 
     const screenshot = this.config.screenshot;
