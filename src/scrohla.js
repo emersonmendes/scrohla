@@ -28,6 +28,18 @@ class Scrohla {
     this.submit( pass.xpath + "//ancestor::form");
   }
 
+  useCookies(cookies){
+    const cookieManager = new CookieManager(cookies,this.driver);
+    this.waitPageLoad();
+    if (cookieManager.exists()) {
+      logger.info("using cookies: %s",cookies);
+      this.flow(() => cookieManager.inject(() => this.reload()));
+    }else{
+      this.sleep(7000);
+      this.flow(() => cookieManager.store());
+    }
+  }
+
   authenticate(auth) {
 
     this.goTo(auth.loginURL);
@@ -90,19 +102,19 @@ class Scrohla {
     return this.waitFor(xpath, time).then(elm => elm.getAttribute(attrib));
   }
 
-  waitFor(xpath, time = 10000) {
+  waitFor(xpath, time = 30000) {
     return this.driver.wait(
       this.until().elementLocated(this.By.xpath(xpath)), time
     );
   }
 
-  waitForVisible(xpath, time = 10000) {
+  waitForVisible(xpath, time = 30000) {
     return this.driver.wait(
       this.until().elementIsVisible(this.waitFor(xpath,time)), time
     );
   }
 
-  waitForNotVisible(xpath, time = 10000) {
+  waitForNotVisible(xpath, time = 30000) {
     return this.driver.wait(
       this.until().elementIsNotVisible(this.waitFor(xpath,time)), time
     );
