@@ -21,7 +21,9 @@ class Core {
     
     if("phantom" === browser){
       this.configurePhantom(builder);
-    }else {
+    }else if("firefox" === browser) {
+      this.configureFirefox(builder);
+    } else {
       this.configureChrome(builder);
     }
 
@@ -31,6 +33,22 @@ class Core {
       resolution.h
     );
     
+  }
+
+  configureFirefox(builder){
+    
+    const firefox = require("selenium-webdriver/firefox");
+    builder.forBrowser("firefox");
+    const binary = new firefox.Binary(firefox.Channel.NIGHTLY);
+    builder.setFirefoxOptions(new firefox.Options().setBinary(binary));
+    
+    if(config.browser.firefox.headless){
+      binary.addArguments("-headless");
+      logger.info("firefox is in headless mode. args:");
+    }   
+   
+    this.driver = builder.build();
+
   }
 
   configurePhantom(builder){

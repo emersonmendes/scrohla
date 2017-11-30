@@ -1,13 +1,19 @@
 {
   "browser" : {
-    "name" : "phantom",
+    "name" : "firefox",
     "resolution" : {
       "w" : 1280,
       "h" : 1024
     },
     "userAgent" : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
-    "chrome" : {
+    "firefox" : {
       "headless" : true,
+      "args" : [ 
+
+      ]
+    },
+    "chrome" : {
+      "headless" : false,
       "args" : [ 
         "--start-maximized",
         "--hide-scrollbars",
@@ -15,7 +21,7 @@
       ]
     },
     "phantom" : {
-      "binaryPath" : "/home/emerson/development/projects/phantom-test/phantomjs",
+      "binaryPath" : "/home/emerson/development/projects/crawler/crawler-collector/src/3rd/phantomjs-2.1.1",
       "args" : [
         "--web-security=false",
         "--ignore-ssl-errors=true"
