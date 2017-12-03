@@ -40,21 +40,23 @@ class Scrohla {
     }
   }
 
-  authenticate(auth) {
+  authenticate(dto) {
 
-    this.goTo(auth.loginURL);
+    this.goTo(dto.loginURL);
 
-    const cookies = this.params.targetName.concat("-").concat(auth.user.data);
+    dto.beforeLogin && this.flow(dto.beforeLogin);
+
+    const cookies = this.params.targetName.concat("-").concat(dto.user.data);
   
     const cookieManager = new CookieManager(cookies,this.driver);
     
-    if (cookieManager.exists()) {
+    if (dto.cookies && cookieManager.exists()) {
       logger.info("using cookies: %s",cookies);
       this.waitPageLoad();
       this.flow(() => cookieManager.inject(() => this.reload()));
     } else {
       logger.info("doing login ...");
-      this.doLogin(auth.user, auth.pass);
+      this.doLogin(dto.user, dto.pass);
       this.waitPageLoad();
       this.sleep(7000);
       this.flow(() => cookieManager.store());
@@ -138,6 +140,10 @@ class Scrohla {
 
   executeJs(script) {
     return this.driver.executeScript(script);
+  }
+
+  mouseMoveTo(xpath){
+    this.driver.actions().mouseMove(this.waitFor(xpath)).perform();
   }
 
   reload() {
