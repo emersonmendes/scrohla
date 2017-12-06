@@ -88,6 +88,10 @@ class Scrohla {
     return this.driver.get(url);
   }
 
+  scrollToPageBottom(){
+    this.executeJs("window.scrollTo(0,document.body.scrollHeight);", "");
+  }
+
   getText(xpath, time) {
     return this.waitFor(xpath, time).then(elm => elm.getText());
   }
@@ -152,7 +156,7 @@ class Scrohla {
   }
 
   sleep(ms = 10000) {
-    this.flow(() => logger.info("sleeping for %s milliseconds",ms));
+    this.flow(() => logger.info("sleeping for %s seconds",ms / 1000));
     this.driver.sleep(ms);
   }
 
@@ -191,21 +195,16 @@ class Scrohla {
     const screenshot = this.config.screenshot;
 
     if (!screenshot.path) {
-      logger.warn("Couldnt take screenshot :( , Please, set screenshot path config!");
+      logger.warn("Couldn't take screenshot :( , Please, check screenshot path config.");
       return;
     }
 
     this.driver.takeScreenshot().then((data) => {
-
       const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
-
       fs.writeFile(path, data.replace(/^data:image\/png;base64,/, ""), "base64", (err) => {
-        if (err) {
-          throw err;
-        }
+        if (err) throw err;
         logger.info("Screenshot saved in: " + path);
       });
-
     });
 
   }
