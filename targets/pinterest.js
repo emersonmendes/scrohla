@@ -1,52 +1,50 @@
 "use strict";
 
-//const logger = require("winston");
-//const credentials = require("./credentials.json").pinterest;
+const { FileUtils } = require("../src/fileUtils");
+const path = require("path");
+
+const IMAGES_DEST = "/home/emerson/Downloads/";
+const SCROLL_AMOUNT = 1;
+const SCROLL_TIME = 3; // segundos
 
 const target = {
     url : "https://www.pinterest.com/explore/famous-faces/",
-    execute : collect
+    execute : init
 };
 
-function collect(scrohla, sendResult){
-    
-    let result = { msg : "Downloads ok!" };
-    
-    // scrohla.click("//article//header//*[contains(@href,'followers')]");
-    
-    // scrohla.authenticate({
-    //     loginURL: target.url,
-    //     user :{ 
-    //         xpath : "(//input[ @name='username' ])[1]", 
-    //         data : credentials.user
-    //     },
-    //     pass : { 
-    //         xpath : "(//input[@type='password'])[1]", 
-    //         data : credentials.pass
-    //     }
-    // });
+let scrohla;
+let result = {};
 
+function init(_scrohla, sendResult){
+    scrohla = _scrohla;
     scrohla.start();
-
-    for (var index = 0; index < 2; index++) {
-         scrohla.executeJs("window.scrollTo(0,document.body.scrollHeight);", "");
-         scrohla.sleep(5000);
-    }
-
-    scrohla.findElements("//img").then(elements => {
-        console.log(" Total: s%", elements.length);
-        elements.forEach(element => {
-            element.getAttribute("src").then( atrib => {
-                console.log(atrib);
-                require("child_process").exec(`wget ${atrib} --directory-prefix=/home/emerson/Downloads/`);
-            });
-        });
-    });
-
+    scroll();
+    collectImages();
+    scrohla.logInfo("Aguardando processo de gravação das imagens terminar ...");
     scrohla.flow( () => sendResult(result) );
-
     scrohla.quit();
-
 }    
+
+function scroll(){
+    for (let index = 0; index < SCROLL_AMOUNT; index++) {
+        scrohla.logInfo(`Scroll ${index + 1} ...`);
+        scrohla.scrollToPageBottom();
+        scrohla.sleep(SCROLL_TIME * 1000);
+    }
+}
+
+function collectImages(){
+    scrohla.findElements("//*[@class='Grid__Item']//img").then(elements => {
+        result.quatidadeImagens = elements.length;
+        scrohla.logInfo(`Coletando ${result.quatidadeImagens} imagens ...`);
+        scrohla.sleep(2000);
+        for (const element of elements){
+            element.getAttribute("src").then( url => {
+                FileUtils.download(url, IMAGES_DEST);
+                scrohla.logInfo(path.basename(url));
+            });
+        }
+    });
+}
 
 exports.target = target;
