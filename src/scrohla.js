@@ -138,8 +138,8 @@ class Scrohla {
     this.driver.quit();
   }
 
-  executeJs(script) {
-    return this.driver.executeScript(script);
+  executeJs(script, args) {
+    return this.driver.executeScript(script, args);
   }
 
   mouseMoveTo(xpath){
