@@ -18,6 +18,7 @@
   "scripts": {
     "start": "node index.js",
     "start-debug": "node --inspect-brk index.js",
+    "test-cucumber" : "./node_modules/.bin/cucumber-js",
     "test": "mocha"
   },
   "devDependencies": {}
