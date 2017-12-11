@@ -139,7 +139,7 @@ class Scrohla {
   }
 
   quit() {
-    this.driver.quit();
+    return this.driver.quit();
   }
 
   executeJs(script, args) {

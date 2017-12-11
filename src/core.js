@@ -3,7 +3,6 @@
 const webdriver = require("selenium-webdriver");
 const logger = require("winston");
 const config = require("../config-app.json");
-
 class Core {
 
   constructor(params){
@@ -15,13 +14,12 @@ class Core {
 
     const builder = new webdriver.Builder();
     const browser = config.browser.name;
-
     
     logger.info("Browser:",browser);
     
     if("phantom" === browser){
       this.configurePhantom(builder);
-    }else if("firefox" === browser) {
+    } else if("firefox" === browser) {
       this.configureFirefox(builder);
     } else {
       this.configureChrome(builder);
@@ -68,9 +66,6 @@ class Core {
   }
 
   configureChrome(builder){
-
-    const chrome = require("selenium-webdriver/chrome");
-    chrome.setDefaultService(new chrome.ServiceBuilder(require("chromedriver").path).build());
     
     let defaultArgs = config.browser.chrome.args;
     defaultArgs.push("--user-agent='" + config.browser.userAgent + "'");
