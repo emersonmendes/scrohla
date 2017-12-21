@@ -15,7 +15,7 @@ let lastPost = 0;
 
 const postXpath = "//*[contains(@class,'userContentWrapper')]";
 
-const textToStop = "Para o reitor da Universidade Federal";
+const textToStop = "Coreia do Norte";
 
 function collect(_scrohla, sendResult){
 

@@ -9,13 +9,17 @@
     "url": "https://github.com/emersonmendes/scrohla"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "chromedriver": "^2.33.0",
     "cucumber": "^3.2.0",
+    "express": "^4.16.2",
+    "geckodriver": "^1.10.0",
     "selenium-webdriver": "^3.6.0",
     "winston": "^2.3.1"
   },
   "scripts": {
+    "server": "node server.js",
     "start": "node index.js",
     "start-debug": "node --inspect-brk index.js",
     "test-cucumber": "cd test/automated-tests && ../../node_modules/.bin/cucumber-js",

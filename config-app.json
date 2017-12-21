@@ -19,7 +19,7 @@
       ]
     },
     "phantom" : {
-      "binaryPath" : "/home/emerson/development/projects/crawler/crawler-collector/src/3rd/phantomjs-2.1.1",
+      "binaryPath" : "/home/emerson/Downloads/phantomjs-2.1.1-linux-x86_64/",
       "args" : [
         "--web-security=false",
         "--ignore-ssl-errors=true"

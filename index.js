@@ -25,16 +25,15 @@ const cleanCookies = function(){
 };
 
 const end = function(result){
-    logger.info(JSON.stringify(result,null,4));
+    logger.info(`[${process.pid}] Result: ${JSON.stringify(result,null,4)}`);
     scrohla.quit();
     process.exit();
 };
 
 try {
-  target.execute(scrohla, end );
+  target.execute(scrohla,end);
+  process.send && process.send(`[${process.pid}] Inicializando processo`);
 } catch(err){
   target.auth && cleanCookies();
   logger.error("Erro interno :( Details: ", err);
 }
-
-
