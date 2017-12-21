@@ -33,8 +33,6 @@ function collect(scrohla, sendResult){
     sendResult(result);
   });
 
-  scrohla.quit();
-
 }
 
 exports.target = target;

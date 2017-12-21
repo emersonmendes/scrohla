@@ -10,7 +10,7 @@
 
 ### Start project
 
-    npm start 
+    npm start target-name
 
 ### Selenium api documents
 http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/

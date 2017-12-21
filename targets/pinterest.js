@@ -22,7 +22,6 @@ function init(_scrohla, sendResult){
     collectImages();
     scrohla.logInfo("Aguardando processo de gravação das imagens terminar ...");
     scrohla.flow( () => sendResult(result) );
-    scrohla.quit();
 }    
 
 function scroll(){

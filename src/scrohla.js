@@ -35,7 +35,7 @@ class Scrohla {
       logger.info("using cookies: %s",cookies);
       this.flow(() => cookieManager.inject(() => this.reload()));
     }else{
-      this.sleep(7000);
+      this.sleep(5000);
       this.flow(() => cookieManager.store());
     }
   }
@@ -58,7 +58,7 @@ class Scrohla {
       logger.info("doing login ...");
       this.doLogin(dto.user, dto.pass);
       this.waitPageLoad();
-      this.sleep(7000);
+      this.sleep(5000);
       this.flow(() => cookieManager.store());
     }
 
@@ -100,8 +100,11 @@ class Scrohla {
     return this.driver.findElements(this.By.xpath(xpath));
   }
 
-  findElement(xpath) {
-    return this.driver.findElement(this.By.xpath(xpath));
+  findElement(arg, xpath) {
+    if(!xpath) {
+      return this.driver.findElement(this.By.xpath(arg));
+    } 
+    return arg.findElement(this.By.xpath(xpath));
   }
 
   getAttrib(xpath, attrib, time) {

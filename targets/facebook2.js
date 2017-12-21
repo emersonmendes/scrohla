@@ -2,16 +2,24 @@
 
 const credentials = require("./credentials.json").facebook;
 
+const url = "https://www.facebook.com";
+
 const target = {
-    //url : "https://www.facebook.com/1548217425497632/photos/p.1553682101617831/1553682101617831",
-    url : "https://www.facebook.com/1548217425497632/photos/pcb.1553581334961241/1553581274961247",
-    loginURL : "https://www.facebook.com/",
+    url : `${url}/203326359677581/posts`,
+    loginURL : url,
     execute : collect
 };
 
-function collect(scrohla, sendResult){
+let scrohla;
+let lastPost = 0;
 
-    let result = {};
+const postXpath = "//*[contains(@class,'userContentWrapper')]";
+
+const textToStop = "Para o reitor da Universidade Federal";
+
+function collect(_scrohla, sendResult){
+
+    scrohla = _scrohla;
 
     scrohla.authenticate({
         loginURL: target.loginURL,
@@ -25,21 +33,48 @@ function collect(scrohla, sendResult){
         }
     });
     
-    scrohla.start();       
+    scrohla.start();    
+    
+    iterateOverPosts(sendResult);
 
-    scrohla.waitFor("//*[@class='stageWrapper lfloat _ohe']");  
+}
 
-    scrohla.executeJs(function(){
-        var elemento = document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-        var evento = document.createEvent("Events");
-        evento.initEvent("click", true, false);
-        elemento.dispatchEvent(evento);
-    },"(//div[@class='permalinkPost']//a[contains(@rel,'theater') and @class='_5dec _xcx'])[last()] | (//div[@class = '_2eec']//img)[1]|(//a[contains(@rel,'theater') and @class='_5dec _xcx'])[last()] | (//div[@class = '_2eec']//img)[1]");
+function iterateOverPosts(sendResult){
+    
+    scrohla.scrollToPageBottom();
+    
+    scrohla.sleep(3000);
 
-    scrohla.flow(() => sendResult(result));
+    scrohla.findElements(postXpath).then(elements => {
+    
+        scrohla.logInfo(`Coletando do post ${lastPost + 1} ao ${elements.length}`);
+        
+        for(let i = lastPost; i < elements.length; i++){
+            checkText(elements[i], sendResult);
+        }
+        
+        iterateOverPosts(sendResult);    
+        
+        lastPost = elements.length;
 
-    scrohla.quit();
+    });
 
+}
+
+function checkText(element, sendResult){
+    scrohla.findElement(element,".//*[contains(@class,'_1dwg')]").getText().then( text => {
+        scrohla.logInfo("=========================================================================================");
+        scrohla.logInfo(`Texto: ${text}`);
+        if(text.includes(textToStop)){
+            scrohla
+                .findElement(element,"(.//*[contains(@id,'feed_subtitle_')]//span//span/a[@target])[1]")
+                .getAttribute("href")
+                .then( url => sendResult({ 
+                    text : text, 
+                    url : url 
+                }));
+        }
+    });
 }
 
 exports.target = target;

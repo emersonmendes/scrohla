@@ -53,11 +53,7 @@ function collect(scrohla, sendResult){
         });
     });
 
-    scrohla.flow( () => {
-        sendResult(result);
-    });
-
-    scrohla.quit();
+    scrohla.flow( () => sendResult(result));
 
 }    
 

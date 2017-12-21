@@ -42,8 +42,6 @@ function collect(scrohla, sendResult){
  
   scrohla.flow( () => sendResult(result) );
 
-  scrohla.quit();
-
 }
 
 exports.target = target;

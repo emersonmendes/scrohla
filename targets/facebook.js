@@ -36,11 +36,7 @@ function collect(scrohla, sendResult){
         result.fullName = text;
     });
 
-    scrohla.flow(() => { 
-        sendResult(result);
-    });
-
-    scrohla.quit();
+    scrohla.flow(() => sendResult(result));
 
 }
 

@@ -32,9 +32,7 @@ function collect(_scrohla, sendResult){
     scrohla.logInfo("Iniciando coleta...");
 
     scrohla.takeScreenshot();
-    
-    scrohla.flow(() => console.time("# Tempo Execução"));
-    
+        
     scrohla.click("(//*[@id='lista-redes']//*[contains(@class,'listagens-busca')]//li//a)[1]");
     scrohla.waitForNotVisible(modalLoadingXPATH); 
 
@@ -81,8 +79,6 @@ function collect(_scrohla, sendResult){
 
 function endCollect(sendResult){
     scrohla.flow(() => sendResult(result));
-    scrohla.flow(() => console.timeEnd("# Tempo Execução"));
-    scrohla.quit();
 }
 
 function createResolveCaptchaService(){

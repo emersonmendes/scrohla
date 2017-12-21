@@ -3,6 +3,7 @@
 const path = require("path");
 const config = require("../config-app.json");
 const fs = require("fs");
+
 const COOKIE_SEPARATOR = ";";
 
 class CookieManager {

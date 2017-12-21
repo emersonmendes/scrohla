@@ -24,10 +24,14 @@ const cleanCookies = function(){
   ).clean();
 };
 
-try {
-  target.execute(scrohla, (result) =>  { 
+const end = function(result){
     logger.info(JSON.stringify(result,null,4));
-  });
+    scrohla.quit();
+    process.exit();
+};
+
+try {
+  target.execute(scrohla, end );
 } catch(err){
   target.auth && cleanCookies();
   logger.error("Erro interno :( Details: ", err);
