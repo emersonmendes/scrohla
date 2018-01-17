@@ -11,6 +11,11 @@ const cleanCookies = function(scrohla, target){
     ).clean();
 };
 
+function endProcess(scrohla){
+    scrohla.quit();
+    process.exit();
+}
+
 function init(targetName, targetUrl){
     
     if(!targetName){
@@ -24,12 +29,12 @@ function init(targetName, targetUrl){
     try {
         target.execute(scrohla,(result) => {
             logger.info(`Result => ${JSON.stringify(result,null,4)}`);
-            scrohla.quit();
-            process.exit();
+            endProcess(scrohla);
         });
     } catch(err){
         target.auth && cleanCookies(scrohla,target);
         logger.error("Erro interno :( Details: ", err);
+        endProcess(scrohla);
     }
 
 }

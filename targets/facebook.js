@@ -21,7 +21,8 @@ function collect(scrohla, sendResult){
         pass : { 
             xpath : "(//input[@type='password'])[1]", 
             data : credentials.pass
-        }
+        },
+        cookies : true
     });
     
     scrohla.start();       

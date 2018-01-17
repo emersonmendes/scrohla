@@ -33,8 +33,8 @@ function createWorkers(){
     cluster.fork();
   }
 
-  cluster.on("exit", (worker, code, signal) => {
-      logger.info(`Worker died with code: ${code}, and signal: ${signal}`);
+  cluster.on("exit", (worker, code) => {
+      logger.info(`Worker died with code: ${code}`);
       logger.info("Creating new worker.");
       cluster.fork();
   });
