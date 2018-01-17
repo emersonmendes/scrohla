@@ -3,7 +3,7 @@
 const fs = require("fs");
 const request = require("request");
 const path = require("path");
-const logger = require("winston");
+const logger = require("./logger");
 
 class FileUtils {
 

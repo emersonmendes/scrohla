@@ -1,7 +1,7 @@
 "use strict";
 
 const webdriver = require("selenium-webdriver");
-const logger = require("winston");
+const logger = require("./logger");
 const config = require("../config-app.json");
 class Core {
 
@@ -48,7 +48,7 @@ class Core {
     
     if(config.browser.firefox.headless){
       binary.addArguments("-headless");
-      logger.info("firefox is in headless mode. args:");
+      logger.info("firefox is in headless mode");
     }   
    
     this.driver = builder.build();
@@ -88,8 +88,7 @@ class Core {
       defaultArgs.push("--disable-gpu");
       defaultArgs.push("--no-sandbox");
 
-      logger.info("chrome is in headless mode. args:");
-      logger.info(defaultArgs);
+      logger.info("chrome is in headless mode");
 
     }
     

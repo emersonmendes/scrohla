@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("winston");
+const logger = require("../src/logger");
 const credentials = require("./credentials.json").instagram;
 
 const target = {

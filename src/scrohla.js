@@ -1,7 +1,7 @@
 "use strict";
 
 const fs = require("fs");
-const logger = require("winston");
+const logger = require("./logger");
 const { Core } = require("./core");
 const { CookieManager } = require("./cookie-manager");
 

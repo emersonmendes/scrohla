@@ -1,28 +1,42 @@
 "use strict";
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const app = express();
-const logger = require("winston");
-const { fork } = require("child_process");
+const logger = require("./src/logger");
+const http = require("http");
+const url = require("url");
+const cluster = require("cluster");
+const port = process.env.PORT || 3001;
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => logger.info(`App running on port:${port}`) );
-app.use(bodyParser.urlencoded({ 
-    extended: false 
-}));
-app.use(bodyParser.json());
-
-app.post("/collect",(req, res) => {
-    initProcess(req.body.target);
-    res.send("Success\n");
-});
-
-function initProcess(target){
-    const childProcess = fork("index.js",[target]);
-    childProcess.on("message", (msg) => {
-        logger.info(msg);
-    });
+if (cluster.isMaster) {
+  createWorkers();
+} else {
+  init();
 }
 
+function init() {
+  http.createServer((req, res) => {
+      const index = require("./index");
+      const queryData  = url.parse(req.url, true).query;
+      index.init(queryData.targetName, queryData.targetUrl);
+      res.writeHead(200);
+      res.end("OK!");
+  }).listen(port);
+  logger.info(`Worker listening on port ${port}`);
+}
+
+function createWorkers(){
+
+  const numCPUs = require("os").cpus().length;
+  
+  logger.info("Creating workers. Cpus:",numCPUs);
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", (worker, code, signal) => {
+      logger.info(`Worker died with code: ${code}, and signal: ${signal}`);
+      logger.info("Creating new worker.");
+      cluster.fork();
+  });
+
+}
