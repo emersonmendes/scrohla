@@ -3,6 +3,7 @@
 const path = require("path");
 const config = require("../config-app.json");
 const fs = require("fs");
+const logger = require("./logger");
 
 const COOKIE_SEPARATOR = ";";
 
@@ -40,6 +41,8 @@ class CookieManager {
                     domain: cookie.domain,
                     secure: cookie.secure,
                     httpOnly: cookie.httpOnly
+                }).catch(() => {
+                    logger.warn(`Não conseguiu injetar o cookie: ${cookie.name}`);
                 });
             }
             callback && callback();

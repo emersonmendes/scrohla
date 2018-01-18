@@ -1,6 +1,6 @@
 {
   "browser" : {
-    "name" : "chrome",
+    "name" : "phantom",
     "resolution" : {
       "w" : 1280,
       "h" : 1024
@@ -11,7 +11,7 @@
       "args" : [ ]
     },
     "chrome" : {
-      "headless" : true,
+      "headless" : false,
       "args" : [ 
         "--start-maximized",
         "--hide-scrollbars",
@@ -19,7 +19,7 @@
       ]
     },
     "phantom" : {
-      "binaryPath" : "/home/emerson/Downloads/phantomjs-2.1.3",
+      "binaryPath" : "/home/emerson/development/projects/crawler/crawler-collector/src/3rd/phantomjs-2.1.1",
       "args" : [
         "--web-security=false",
         "--ignore-ssl-errors=true",
