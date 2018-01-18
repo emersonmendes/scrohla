@@ -3,6 +3,7 @@
 const { Scrohla } = require("./src/scrohla");
 const { CookieManager } = require("./src/cookie-manager");
 const logger = require("./src/logger");
+const config = require("./config-app.json");
 
 const cleanCookies = function(scrohla, target){
     new CookieManager(
@@ -12,8 +13,20 @@ const cleanCookies = function(scrohla, target){
 };
 
 function endProcess(scrohla){
-    scrohla.quit();
-    process.exit();
+    
+    if(config.browser.logBrowser){
+        logger.warn("Log do browser capturado durante coleta:");
+        scrohla.getDriver().manage().logs().get("browser").then(function(entries) {                
+            entries.forEach(entry =>  { 
+                scrohla.flow( () => logger.warn(` [ LOG BROWSER ] [${entry.level.name}] ${entry.message}`) );
+            });  
+            
+        });
+    } 
+    
+    scrohla.quit()
+    scrohla.flow(() => process.exit());
+   
 }
 
 function init(targetName, targetUrl){
@@ -35,7 +48,7 @@ function init(targetName, targetUrl){
         target.auth && cleanCookies(scrohla,target);
         logger.error("Erro interno :( Details: ", err);
         endProcess(scrohla);
-    }
+    } 
 
 }
 

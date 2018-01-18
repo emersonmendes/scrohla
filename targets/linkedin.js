@@ -27,17 +27,18 @@ function collect(scrohla, sendResult){
     
     scrohla.start();       
 
+    scrohla.takeScreenshot();
     scrohla.getText("//h1[contains(@class,'pv-top-card-section__name')]").then( name => {
         result.nome = name;
-    });
+    }).catch( () => scrohla.takeScreenshot());
     
     scrohla.getText("//h2[contains(@class,'pv-top-card-section__headline')]").then( headline => {
         result.cargo = headline;
-    });
+    }).catch( () => scrohla.takeScreenshot());
     
     scrohla.getText("//h3[contains(@class,'pv-top-card-section__location ')]").then( location => {
         result.localizacao = location;
-    });
+    }).catch( () => scrohla.takeScreenshot());
 
     scrohla.flow(() => sendResult(result));
 
