@@ -15,7 +15,10 @@ function populatePosts (){
 
     const media = _sharedData.entry_data.ProfilePage[0].user.media;
 
-    window.scrohla = { totalPosts : media.count, posts : [] };
+    window.scrohla = { 
+        totalPosts : media.count, 
+        posts : [] 
+    };
 
     media.nodes.forEach( item => window.scrohla.posts.push({ node : item }) );
     
