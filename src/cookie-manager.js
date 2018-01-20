@@ -22,7 +22,11 @@ class CookieManager {
                     .concat(JSON.stringify(cookie))
                     .concat(COOKIE_SEPARATOR);
             }
-            fs.writeFile(this.cookiesFile, cookiesStr.slice(0,-1));
+            fs.writeFile(this.cookiesFile, cookiesStr.slice(0,-1), err =>{
+                if(err){
+                    logger.warn(`Não conseguiu salvar os cookies. Verifique se o diretorio '${config.cookiesPath}' existe.`);
+                }
+            });
         }); 
     }
 

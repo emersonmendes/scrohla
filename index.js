@@ -16,15 +16,15 @@ function endProcess(scrohla){
     
     if(config.browser.logBrowser){
         logger.warn("Log do browser capturado durante coleta:");
+        scrohla.sleep(5000);
         scrohla.getDriver().manage().logs().get("browser").then(function(entries) {                
             entries.forEach(entry =>  { 
                 scrohla.flow( () => logger.warn(` [ LOG BROWSER ] [${entry.level.name}] ${entry.message}`) );
             });  
-            
-        });
+        });        
     } 
     
-    scrohla.quit()
+    scrohla.quit();
     scrohla.flow(() => process.exit());
    
 }

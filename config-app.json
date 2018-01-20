@@ -1,6 +1,6 @@
 {
   "browser" : {
-    "name" : "phantom",
+    "name" : "chrome",
     "resolution" : {
       "w" : 1280,
       "h" : 1024
@@ -12,7 +12,7 @@
       "args" : [ ]
     },
     "chrome" : {
-      "headless" : false,
+      "headless" : true,
       "args" : [ 
         "--start-maximized",
         "--hide-scrollbars",

@@ -22,23 +22,24 @@ function collect(scrohla, sendResult){
             xpath : "(//input[@type='password'])[1]", 
             data : credentials.pass
         },
-        cookies : true
+        cookies : false
     });
-    
+
     scrohla.start();       
 
     scrohla.takeScreenshot();
-    scrohla.getText("//h1[contains(@class,'pv-top-card-section__name')]").then( name => {
+    
+    scrohla.getText("(//h1[contains(@class,'pv-top-card-section__name')])[1]").then( name => {
         result.nome = name;
-    }).catch( () => scrohla.takeScreenshot());
+    });
     
-    scrohla.getText("//h2[contains(@class,'pv-top-card-section__headline')]").then( headline => {
+    scrohla.getText("(//h2[contains(@class,'pv-top-card-section__headline')])[1]").then( headline => {
         result.cargo = headline;
-    }).catch( () => scrohla.takeScreenshot());
+    });
     
-    scrohla.getText("//h3[contains(@class,'pv-top-card-section__location ')]").then( location => {
+    scrohla.getText("(//h3[contains(@class,'pv-top-card-section__location ')])[1]").then( location => {
         result.localizacao = location;
-    }).catch( () => scrohla.takeScreenshot());
+    });
 
     scrohla.flow(() => sendResult(result));
 

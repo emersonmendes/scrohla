@@ -7,6 +7,10 @@ const logger = require("./logger");
 
 class FileUtils {
 
+  static writeFile(path, content, callback){
+    fs.writeFile(path, content, callback);
+  }
+
   static download(url, localPath){
     return new Promise( (resolve, reject) => {
       
