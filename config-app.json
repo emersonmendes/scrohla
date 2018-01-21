@@ -12,7 +12,7 @@
       "args" : [ ]
     },
     "chrome" : {
-      "headless" : true,
+      "headless" : false,
       "args" : [ 
         "--start-maximized",
         "--hide-scrollbars",

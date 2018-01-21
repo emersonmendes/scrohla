@@ -4,7 +4,7 @@ const logger = require("../src/logger");
 const credentials = require("./credentials.json").instagram;
 
 const target = {
-    url : "https://www.instagram.com/flamengo",
+    url : "https://www.instagram.com/fl0ripamilgrau/",
     loginURL : "https://www.instagram.com/accounts/login",
     execute : collect
 };
@@ -38,19 +38,29 @@ function collect(scrohla, sendResult){
         logger.info("Followers encontrados: %s",result.followers);
     });
 
-    for (var index = 0; index < 10; index++) {
+    for (var index = 0; index < 150; index++) {
         scrohla.executeJs("document.querySelector('._gs38e').scrollBy(0,50000)", "");
-        scrohla.sleep(500);
+        scrohla.sleep(2000);
         scrohla.findElements("//*[@class='_ov9ai']//*[@class='_qv64e _gexxb _4tgw8 _njrw0']").then(elements => {
             logger.info("Quantidade de pessoas até o momento: %s",elements.length);
         });
     }
 
+    let qt = 0;
+    let qtClicked = 0;
+
     scrohla.findElements("//*[@class='_ov9ai']//*[@class='_qv64e _gexxb _4tgw8 _njrw0']").then(elements => {
         logger.info("Preparar para seguir %s pessoas",elements.length);
         elements.forEach(element => {
-            element.click();
-            scrohla.sleep(300);
+            element.click().then(() => qtClicked++);
+            qt++;
+            if(qt > 25){
+                scrohla.flow( () => logger.info("Clicou %s vezes",qtClicked) );
+                scrohla.sleep(60000 * 5);
+                qt = 0;
+            } else {
+                scrohla.sleep(300);
+            }
         });
     });
 

@@ -30,6 +30,8 @@ class Core {
       resolution.w, 
       resolution.h
     );
+
+    this.driver.manage().window().maximize();
     
   }
 
