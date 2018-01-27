@@ -25,11 +25,14 @@ function endProcess(scrohla){
     } 
     
     scrohla.quit();
+    scrohla.flow(() => console.timeEnd("Process time"));  // eslint-disable-line 
     scrohla.flow(() => process.exit());
    
 }
 
 function init(targetName, targetUrl){
+
+    console.time("Process time");  // eslint-disable-line 
     
     if(!targetName){
         throw Error("informe a target. Ex: npm start submarino");

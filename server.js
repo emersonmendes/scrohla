@@ -16,6 +16,8 @@ function init() {
   http.createServer((req, res) => {
       const index = require("./index");
       const queryData  = url.parse(req.url, true).query;
+      logger.info(`targetName: ${queryData.targetName}`);
+      logger.info(`targetUrl: ${queryData.targetUrl}`);
       index.init(queryData.targetName, queryData.targetUrl);
       res.writeHead(200);
       res.end("OK!");
