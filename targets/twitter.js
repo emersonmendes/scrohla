@@ -25,9 +25,9 @@ function collect(scrohla, sendResult){
     
     scrohla.start();
         
-    let result = {};
-
     scrohla.waitFor("//*[@class='me dropdown session js-session']");  
+    
+    let result = {};
 
     scrohla.getText("//*[contains(@class,'ProfileHeaderCard-name')]//a").then( text => {
         result.name = text;

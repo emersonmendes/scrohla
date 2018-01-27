@@ -2,7 +2,7 @@
 
 const credentials = require("./credentials.json").dolcegusto;
 
-const CODIGO = "7en6 n93t 99lj";
+const CODIGO = "j9kq rr97 7qgl";
 
 const target = {
   url : "https://www.nescafe-dolcegusto.com.br/mybonus/",
@@ -26,8 +26,10 @@ function collect(scrohla, sendResult){
     beforeLogin : () => {
       scrohla.mouseMoveTo("//div[@id='header-account']");
     },
-    cookies : false
+    cookies : true
   });
+
+  scrohla.start();
 
   scrohla.type(CODIGO.replace(/ /g,"").toUpperCase(),"//input[@id='coupon_code']");
   scrohla.click("//*[@id='pcm-codes-form']//button");

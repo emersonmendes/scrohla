@@ -22,6 +22,10 @@ class Scrohla {
     this.flow(() => logger.info(text));
   }
 
+  logWarn(text){
+    this.flow(() => logger.warn(text));
+  }
+
   doLogin(user, pass) {
     this.type(user.data, user.xpath);
     this.type(pass.data, pass.xpath);
@@ -31,18 +35,16 @@ class Scrohla {
   authenticate(dto) {
 
     this.goTo(dto.loginURL);
-
     dto.beforeLogin && this.flow(dto.beforeLogin);
-
     const cookies = `${this.params.targetName}-${dto.user.data}`;
-  
     const cookieManager = new CookieManager(cookies,this.driver);
     
     if (dto.cookies && cookieManager.exists()) {
-      logger.info("Using cookies: %s",cookies);
+      this.logInfo(`Using cookies: ${cookies}`);
       this.flow(() => cookieManager.inject(() => this.reload()));
+      this.sleep(5000);
     } else {
-      logger.info("Doing login ...");
+      this.logInfo("Doing login ...");
       this.doLogin(dto.user, dto.pass);
       this.sleep(5000);
       this.flow(() => cookieManager.store());
@@ -76,6 +78,7 @@ class Scrohla {
   }
 
   goTo(url) {
+    this.logInfo(`Going to ${url}`);
     return this.driver.get(url);
   }
 
@@ -101,6 +104,10 @@ class Scrohla {
       return this.driver.findElement(this.By.xpath(arg));
     } 
     return arg.findElement(this.By.xpath(xpath));
+  }
+
+  promiseAll(promises){
+    return this.webdriver.promise.all(promises);
   }
 
   /**
@@ -171,12 +178,12 @@ class Scrohla {
   }
 
   reload() {
-    logger.info("Reloading ...");
+    this.logInfo("Reloading ...");
     this.driver.navigate().refresh();
   }
 
   sleep(ms = 10000) {
-    this.flow(() => logger.info(`Sleeping - ${ms/1000} seconds`));
+    this.logInfo(`Sleeping - ${ms/1000} seconds`);
     this.driver.sleep(ms);
   }
 
@@ -190,11 +197,14 @@ class Scrohla {
 
   start() {
     const targetURL = this.params.targetURL;
-    if (!targetURL) {
-      logger.warn("Target is required!"); return;
-    }
-    logger.info("Initializing Scrohla ...");
-    logger.info("Target url: ", targetURL);
+    this.flow(() => {
+      if (!targetURL) {
+        this.logWarn("Target is required!"); 
+        return;
+      }
+      this.logInfo("Initializing Scrohla ...");
+      this.logInfo(`Target url: ${targetURL}`);
+    });
     this.goTo(targetURL);
   }
 
@@ -207,7 +217,7 @@ class Scrohla {
     const screenshot = this.config.screenshot;
 
     if (!screenshot.path) {
-      logger.warn("Couldn't take screenshot :( , Please, check screenshot path config.");
+      this.logWarn("Couldn't take screenshot :( , Please, check screenshot path config.");
       return;
     }
 
