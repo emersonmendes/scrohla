@@ -25,14 +25,18 @@ class Core {
       this.configureChrome(builder);
     }
 
-    const resolution = config.browser.resolution;
-    this.driver.manage().window().setSize(
-      resolution.w, 
-      resolution.h
-    );
-
-    this.driver.manage().window().maximize();
+    this.configureDriver();
     
+  }
+
+
+  configureDriver(){
+    this.driver.manage().window().setSize(
+      config.browser.resolution.w, 
+      config.browser.resolution.h
+    );
+    this.driver.manage().window().maximize();
+    this.driver.manage().timeouts().pageLoadTimeout(500000);
   }
 
   configureFirefox(builder){
@@ -65,7 +69,7 @@ class Core {
     let defaultArgs = config.browser.phantom.args;
 
     caps.set("phantomjs.cli.args", defaultArgs);
-    caps.set("phantomjs.page.settings.userAgent", config.browser.userAgent);
+    caps.set("phantomjs.page.settings.userAgent", this.mountUSerAgent());
     
     builder.withCapabilities(caps);
     builder.forBrowser("phantomjs");
@@ -75,23 +79,16 @@ class Core {
 
   configureChrome(builder){
 
-    /**
-     * require chromedriver assim pois sem isso quando inicia com
-     * child process o caminho nao é reconhecido. Verificar melhor no futuro
-     */
     require("chromedriver").path;
     
     let defaultArgs = config.browser.chrome.args;
-    defaultArgs.push("--user-agent='" + config.browser.userAgent + "'");
+    defaultArgs.push(`--user-agent='${this.mountUSerAgent()}'`);
 
     if(config.browser.chrome.headless){
-      
       defaultArgs.push("--headless");
       defaultArgs.push("--disable-gpu");
       defaultArgs.push("--no-sandbox");
-
-      logger.info("chrome is in headless mode");
-
+      logger.info("Chrome is in headless mode");
     }
     
     if(this.params.args){
@@ -103,6 +100,16 @@ class Core {
     builder.withCapabilities(caps);
     this.driver = builder.build();
   
+  }
+
+  mountUSerAgent(){
+    let userAgent = config.browser.userAgent;
+    const custom = this.params.custom;
+    if(custom && custom.userAgent){
+      userAgent = custom.userAgent;
+      logger.warn("Using custom useragent: ",userAgent);
+    }
+    return userAgent;
   }
 
   getWebdriver(){

@@ -28,36 +28,22 @@ class Scrohla {
     this.submit( pass.xpath + "//ancestor::form");
   }
 
-  useCookies(cookies){
-    const cookieManager = new CookieManager(cookies,this.driver);
-    this.waitPageLoad();
-    if (cookieManager.exists()) {
-      logger.info("using cookies: %s",cookies);
-      this.flow(() => cookieManager.inject(() => this.reload()));
-    }else{
-      this.sleep(5000);
-      this.flow(() => cookieManager.store());
-    }
-  }
-
   authenticate(dto) {
 
     this.goTo(dto.loginURL);
 
     dto.beforeLogin && this.flow(dto.beforeLogin);
 
-    const cookies = this.params.targetName.concat("-").concat(dto.user.data);
+    const cookies = `${this.params.targetName}-${dto.user.data}`;
   
     const cookieManager = new CookieManager(cookies,this.driver);
     
     if (dto.cookies && cookieManager.exists()) {
-      logger.info("using cookies: %s",cookies);
-      this.waitPageLoad();
+      logger.info("Using cookies: %s",cookies);
       this.flow(() => cookieManager.inject(() => this.reload()));
     } else {
-      logger.info("doing login ...");
+      logger.info("Doing login ...");
       this.doLogin(dto.user, dto.pass);
-      this.waitPageLoad();
       this.sleep(5000);
       this.flow(() => cookieManager.store());
     }
@@ -79,8 +65,9 @@ class Scrohla {
       .then(elm => elm.click())
       .catch(() => {
         const msg = "Não conseguiu achar o xpath: " + xpath;
-        if (required) 
+        if (required) {
           throw Error(msg);
+        }
       });
   }
 
@@ -112,21 +99,15 @@ class Scrohla {
   }
 
   waitFor(xpath, time = 30000) {
-    return this.driver.wait(
-      this.until().elementLocated(this.By.xpath(xpath)), time
-    );
+    return this.driver.wait(this.until().elementLocated(this.By.xpath(xpath)), time);
   }
 
   waitForVisible(xpath, time = 30000) {
-    return this.driver.wait(
-      this.until().elementIsVisible(this.waitFor(xpath,time)), time
-    );
+    return this.driver.wait(this.until().elementIsVisible(this.waitFor(xpath,time)), time);
   }
 
   waitForNotVisible(xpath, time = 30000) {
-    return this.driver.wait(
-      this.until().elementIsNotVisible(this.waitFor(xpath,time)), time
-    );
+    return this.driver.wait(this.until().elementIsNotVisible(this.waitFor(xpath,time)), time);
   }
 
   getCurrentURL() {
@@ -159,16 +140,8 @@ class Scrohla {
   }
 
   sleep(ms = 10000) {
-    this.flow(() => logger.info("sleeping for %s seconds",ms / 1000));
+    this.flow(() => logger.info(`Sleeping - ${ms/1000} seconds`));
     this.driver.sleep(ms);
-  }
-
-  waitPageLoad(ms = 500000) {
-    return this.driver.manage().timeouts().pageLoadTimeout(ms);
-  }
-
-  implicitlyWait(ms = 10000){
-    this.driver.manage().timeouts().implicitlyWait(ms);
   }
 
   getKey() {

@@ -37,7 +37,11 @@ function init(targetName, targetUrl){
     
     const { target } = require(`${__dirname}/targets/${targetName}`);
     
-    const scrohla = new Scrohla({ targetURL: targetUrl || target.url, targetName: targetName });
+    const scrohla = new Scrohla({ 
+        targetURL: targetUrl || target.url, 
+        targetName: targetName,
+        custom: target.custom
+    });
 
     try {
         target.execute(scrohla,(result) => {
