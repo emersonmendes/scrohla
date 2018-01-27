@@ -50,6 +50,11 @@ class Scrohla {
 
   }
 
+  /**
+   * Envia texto para um elemento de input
+   * @param {string} text 
+   * @param {string} xpath 
+   */
   type(text, xpath) {
     this.waitForVisible(xpath);
     this.findElement(xpath).sendKeys(text);
@@ -64,9 +69,8 @@ class Scrohla {
     this.findElement(xpath)
       .then(elm => elm.click())
       .catch(() => {
-        const msg = "Não conseguiu achar o xpath: " + xpath;
         if (required) {
-          throw Error(msg);
+          throw Error(`Não conseguiu achar o xpath: ${xpath}`);
         }
       });
   }
@@ -79,6 +83,11 @@ class Scrohla {
     this.executeJs("window.scrollTo(0,document.body.scrollHeight);", "");
   }
 
+  /**
+   * Pega o texto de um elemento
+   * @param {string} xpath 
+   * @param {number} time 
+   */
   getText(xpath, time) {
     return this.waitFor(xpath, time).then(elm => elm.getText());
   }
@@ -94,22 +103,44 @@ class Scrohla {
     return arg.findElement(this.By.xpath(xpath));
   }
 
+  /**
+   * Pega o atributo de um elemento
+   * @param {string} xpath 
+   * @param {string} attrib 
+   * @param {number} time 
+   */
   getAttrib(xpath, attrib, time) {
     return this.waitFor(xpath, time).then(elm => elm.getAttribute(attrib));
   }
 
+  /**
+   * Aguarda e retorna o elemento quando encontrado no dom
+   */
   waitFor(xpath, time = 30000) {
     return this.driver.wait(this.until().elementLocated(this.By.xpath(xpath)), time);
   }
 
+  /**
+   * Aguarda e retorna o elemento quando visível no dom
+   * @param { string } xpath 
+   * @param { number } time 
+   */
   waitForVisible(xpath, time = 30000) {
     return this.driver.wait(this.until().elementIsVisible(this.waitFor(xpath,time)), time);
   }
 
+  /**
+   * Aguarda e retorna o elemento quando não mais visível no dom
+   * @param { string } xpath 
+   * @param { number } time 
+   */
   waitForNotVisible(xpath, time = 30000) {
     return this.driver.wait(this.until().elementIsNotVisible(this.waitFor(xpath,time)), time);
   }
 
+  /**
+   * Pega a url corrente
+   */
   getCurrentURL() {
     return this.driver.getCurrentUrl();
   }
@@ -126,6 +157,11 @@ class Scrohla {
     return this.driver.quit();
   }
 
+  /**
+   * Execute javascript no browser
+   * @param {(function|string)} script - JavaScript a ser executado no browser
+   * @param {*} args 
+   */
   executeJs(script, args) {
     return this.driver.executeScript(script, args);
   }

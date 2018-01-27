@@ -19,7 +19,8 @@ function collect(scrohla, sendResult){
         pass : { 
             xpath : "//input[@class='js-password-field']", 
             data : credentials.pass
-        }
+        },
+        cookies : true
     });
     
     scrohla.start();
