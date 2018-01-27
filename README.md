@@ -6,11 +6,13 @@
 
 ### Run tests
 
-    npm test (it needs mocha to be installed)
+    npm test 
+    (it needs mocha to be installed)
 
 ### Start project
 
-    npm start target-name
+    npm start target-name 
+    Ex: npm start facebook
 
 ### Selenium api documents
 http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/
