@@ -29,7 +29,6 @@ class Core {
     
   }
 
-
   configureDriver(){
     this.driver.manage().window().setSize(
       config.browser.resolution.w, 
@@ -48,15 +47,24 @@ class Core {
     require("geckodriver").path;
     
     const firefox = require("selenium-webdriver/firefox");
-    builder.forBrowser("firefox");
+    
+    const options = new firefox.Options();
+
     const binary = new firefox.Binary(firefox.Channel.NIGHTLY);
-    builder.setFirefoxOptions(new firefox.Options().setBinary(binary));
+    options.setBinary(binary);
     
     if(config.browser.firefox.headless){
       binary.addArguments("-headless");
       logger.info("firefox is in headless mode");
     }   
-   
+    
+    builder.setFirefoxOptions(options);
+    builder.withCapabilities({
+      'browserName': 'firefox', 
+      acceptSslCerts: true, 
+      acceptInsecureCerts: true
+    });
+
     this.driver = builder.build();
 
   }

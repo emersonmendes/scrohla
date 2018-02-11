@@ -1,7 +1,9 @@
 "use strict";
 
+// varios testes no site https://badssl.com/
+
 const target = {
-  url : "https://expired.badssl.com/",
+  url : "https://self-signed.badssl.com/",
   execute : collect
 };
 
