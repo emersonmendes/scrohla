@@ -60,7 +60,7 @@ class Core {
     
     builder.setFirefoxOptions(options);
     builder.withCapabilities({
-      'browserName': 'firefox', 
+      "browserName": "firefox", 
       acceptSslCerts: true, 
       acceptInsecureCerts: true
     });
@@ -89,23 +89,30 @@ class Core {
 
     require("chromedriver").path;
     
-    let defaultArgs = config.browser.chrome.args;
-    defaultArgs.push(`--user-agent='${this.mountUSerAgent()}'`);
+    let args = config.browser.chrome.args;
+    args.push(`--user-agent='${this.mountUSerAgent()}'`);
+
+    if(this.params.args){
+      args = args.concat(this.params.args);
+    }
 
     if(config.browser.chrome.headless){
-      defaultArgs.push("--headless");
-      defaultArgs.push("--disable-gpu");
-      defaultArgs.push("--no-sandbox");
+      args.push("--headless");
+      args.push("--disable-gpu");
+      args.push("--no-sandbox");
       logger.info("Chrome is in headless mode");
     }
     
-    if(this.params.args){
-      defaultArgs = defaultArgs.concat(this.params.args);
-    }
-    
-    const caps = webdriver.Capabilities.chrome();
-    caps.set("chromeOptions", { "args": defaultArgs });
-    builder.withCapabilities(caps);
+    builder.withCapabilities({
+      "browserName": "chrome", 
+      "chromeOptions": { 
+        "args": args 
+      },
+      acceptSslCerts: true, 
+      acceptInsecureCerts: true
+    });
+
+
     this.driver = builder.build();
   
   }
