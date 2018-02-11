@@ -39,12 +39,6 @@ class Core {
   }
 
   configureFirefox(builder){
-
-    /**
-     * require geckodriver assim pois sem isso quando inicia com
-     * child process o caminho nao é reconhecido. Verificar melhor no futuro
-     */
-    require("geckodriver").path;
     
     const firefox = require("selenium-webdriver/firefox");
     
@@ -87,8 +81,6 @@ class Core {
 
   configureChrome(builder){
 
-    require("chromedriver").path;
-    
     let args = config.browser.chrome.args;
     args.push(`--user-agent='${this.mountUSerAgent()}'`);
 
@@ -111,7 +103,6 @@ class Core {
       acceptSslCerts: true, 
       acceptInsecureCerts: true
     });
-
 
     this.driver = builder.build();
   

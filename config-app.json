@@ -1,6 +1,6 @@
 {
   "browser" : {
-    "name" : "chrome",
+    "name" : "firefox",
     "resolution" : {
       "w" : 1280,
       "h" : 1024

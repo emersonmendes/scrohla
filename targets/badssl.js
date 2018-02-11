@@ -12,8 +12,6 @@ function collect(scrohla, sendResult){
     let result = {};
 
     scrohla.start();  
-    
-    scrohla.takeScreenshot();
 
     scrohla.getText("//body").then( text => {
         result.text = text.replace("\n"," ");
