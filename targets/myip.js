@@ -11,19 +11,19 @@ function collect(scrohla, sendResult){
 
     let result = {};
 
-    scrohla.getText("//*[@id='content']/div/table/tbody/tr[1]/td[2]").then( ip => {
+    scrohla.getText("(//*[@id='content']//table//tr[1]//td[2])[1]").then( ip => {
         result.ip = ip;
     });
 
-    scrohla.getText("//*[@id='content']/div/table/tbody/tr[3]/td[2]").then( browser => {
+    scrohla.getText("(//*[@id='content']//table//tr[3]//td[2])[1]").then( browser => {
         result.browser = browser;
     });
 
-    scrohla.getText("//*[@id='content']/div/table/tbody/tr[4]/td[2]/div[1]").then( platform => {
+    scrohla.getText("(//*[@id='content']//table//tr[4]//td[2])[1]").then( platform => {
         result.platform = platform;
     });   
 
-    scrohla.getText("//*[@id='content']/div/table/tbody/tr[6]/td[2]").then( country => {
+    scrohla.getText("(//*[@id='content']//table//tr[6]/td[2])[1]").then( country => {
         result.country = country;
     });  
 

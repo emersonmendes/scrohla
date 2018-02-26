@@ -94,6 +94,11 @@ class Core {
       args.push("--no-sandbox");
       logger.info("Chrome is in headless mode");
     }
+
+    const proxy = config.browser.proxy;
+    if(proxy.ip && proxy.port){
+      args.push(`--proxy-server=${proxy.ip}:${proxy.port}`);
+    }
     
     builder.withCapabilities({
       "browserName": "chrome", 
