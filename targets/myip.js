@@ -11,6 +11,8 @@ function collect(scrohla, sendResult){
 
     let result = {};
 
+    scrohla.waitForDocumentReady();
+
     scrohla.getText("(//*[@id='content']//table//tr[1]//td[2])[1]").then( ip => {
         result.ip = ip;
     });

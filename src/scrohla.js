@@ -164,6 +164,12 @@ class Scrohla {
     return this.driver.quit();
   }
 
+  waitForDocumentReady(){
+    return this.driver.wait(
+      () => this.executeJs("return document.readyState === 'complete'")
+    );
+  }
+
   /**
    * Execute javascript no browser
    * @param {(function|string)} script - JavaScript a ser executado no browser
