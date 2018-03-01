@@ -99,9 +99,7 @@ class Core {
       "browserName": "chrome", 
       "chromeOptions": { 
         "args": args 
-      },
-      acceptSslCerts: true, 
-      acceptInsecureCerts: true
+      }
     });
 
     this.driver = builder.build();
