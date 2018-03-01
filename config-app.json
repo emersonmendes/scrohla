@@ -1,6 +1,10 @@
 {
   "browser" : {
-    "name" : "firefox",
+    "name" : "chrome",
+    "proxy" : {
+      "ip": "",
+      "port" : ""
+    },
     "resolution" : {
       "w" : 1280,
       "h" : 1024
