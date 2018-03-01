@@ -34,7 +34,7 @@ function collect(scrohla, sendResult){
   scrohla.type(CODIGO.replace(/ /g,"").toUpperCase(),"//input[@id='coupon_code']");
   scrohla.click("//*[@id='pcm-codes-form']//button");
 
-  scrohla.waitFor("//*[@class='error-msg']",5000)
+  scrohla.waitForLocated("//*[@class='error-msg']",5000)
     .then(()=>{
       result.erro = `Codigo ${CODIGO} está inválido ou já foi utilizado!`;
     })

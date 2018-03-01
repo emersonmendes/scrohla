@@ -25,7 +25,7 @@ function collect(scrohla, sendResult){
     
     scrohla.start();
         
-    scrohla.waitFor("//*[@class='me dropdown session js-session']");  
+    scrohla.waitForLocated("//*[@class='me dropdown session js-session']");  
     
     let result = {};
 

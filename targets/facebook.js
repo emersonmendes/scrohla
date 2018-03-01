@@ -27,7 +27,7 @@ function collect(scrohla, sendResult){
     
     scrohla.start();       
 
-    scrohla.waitFor("//*[@data-click='profile_icon']");  
+    scrohla.waitForLocated("//*[@data-click='profile_icon']");  
    
     scrohla.getText("//h1[@id='seo_h1_tag']").then( text => {
         result.fullName = text;

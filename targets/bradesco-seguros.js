@@ -119,7 +119,7 @@ function resolveCaptcha(res, req, resolve, reject){
     scrohla.click("//*[@id='btnContinuar']//a");
     scrohla.waitForNotVisible(modalLoadingXPATH);
 
-    scrohla.waitFor(itemTipoEstabelecimentoXPATH,5000).then(()=>{
+    scrohla.waitForLocated(itemTipoEstabelecimentoXPATH,5000).then(()=>{
         scrohla.logInfo("Digitou certo miseravi!");
         resolve(); 
     }).catch(() => {

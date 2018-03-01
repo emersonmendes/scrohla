@@ -63,7 +63,7 @@ class Scrohla {
   }
 
   submit(xpath) {
-    this.waitFor(xpath).then(elm => elm.submit());
+    this.waitForLocated(xpath).then(elm => elm.submit());
   }
 
   click(xpath, required = true) {
@@ -92,7 +92,7 @@ class Scrohla {
    * @param {number} time 
    */
   getText(xpath, time) {
-    return this.waitFor(xpath, time).then(elm => elm.getText());
+    return this.waitForLocated(xpath, time).then(elm => elm.getText());
   }
 
   findElements(xpath) {
@@ -117,13 +117,13 @@ class Scrohla {
    * @param {number} time 
    */
   getAttrib(xpath, attrib, time) {
-    return this.waitFor(xpath, time).then(elm => elm.getAttribute(attrib));
+    return this.waitForLocated(xpath, time).then(elm => elm.getAttribute(attrib));
   }
 
   /**
    * Aguarda e retorna o elemento quando encontrado no dom
    */
-  waitFor(xpath, time = 30000) {
+  waitForLocated(xpath, time = 30000) {
     return this.driver.wait(this.until().elementLocated(this.By.xpath(xpath)), time);
   }
 
@@ -133,7 +133,7 @@ class Scrohla {
    * @param { number } time 
    */
   waitForVisible(xpath, time = 30000) {
-    return this.driver.wait(this.until().elementIsVisible(this.waitFor(xpath,time)), time);
+    return this.driver.wait(this.until().elementIsVisible(this.findElement(xpath)), time );
   }
 
   /**
@@ -142,7 +142,7 @@ class Scrohla {
    * @param { number } time 
    */
   waitForNotVisible(xpath, time = 30000) {
-    return this.driver.wait(this.until().elementIsNotVisible(this.waitFor(xpath,time)), time);
+    return this.driver.wait(this.until().elementIsNotVisible(this.findElement(xpath)), time );
   }
 
   /**
@@ -164,10 +164,11 @@ class Scrohla {
     return this.driver.quit();
   }
 
+  /** 
+   * Why not: this.driver.manage().timeouts().pageLoadTimeout(500000) ?
+  */
   waitForDocumentReady(){
-    return this.driver.wait(
-      () => this.executeJs("return document.readyState === 'complete'")
-    );
+    return this.driver.wait(() => this.executeJs("return document.readyState === 'complete'"));
   }
 
   /**
@@ -180,7 +181,7 @@ class Scrohla {
   }
 
   mouseMoveTo(xpath){
-    this.driver.actions().mouseMove(this.waitFor(xpath)).perform();
+    this.driver.actions().mouseMove(this.waitForLocated(xpath)).perform();
   }
 
   reload() {
@@ -195,6 +196,10 @@ class Scrohla {
 
   getKey() {
     return this.Key;
+  }
+
+  getBy(){
+    return this.By;
   }
 
   getDriver() {
