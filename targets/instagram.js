@@ -37,7 +37,7 @@ function collect(scrohla, sendResult){
 
     scrohla.click("//article//header//*[contains(@href,'followers')]");
 
-    scrohla.waitFor("//*[@class='_6e4x5']").then(() =>{
+    scrohla.waitForLocated("//*[@class='_6e4x5']").then(() => {
         logger.info("Followers encontrados: %s",result.followers);
     });
 

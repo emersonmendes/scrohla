@@ -5,6 +5,8 @@ const logger = require("./logger");
 const { Core } = require("./core");
 const { CookieManager } = require("./cookie-manager");
 
+const defaultTimeout = 15000;
+
 class Scrohla {
 
   constructor(params) {
@@ -37,16 +39,16 @@ class Scrohla {
     this.goTo(dto.loginURL);
     dto.beforeLogin && this.flow(dto.beforeLogin);
     const cookies = `${this.params.targetName}-${dto.user.data}`;
-    const cookieManager = new CookieManager(cookies,this.driver);
+    const cookieManager = new CookieManager(cookies,this.getDriver());
     
     if (dto.cookies && cookieManager.exists()) {
       this.logInfo(`Using cookies: ${cookies}`);
       this.flow(() => cookieManager.inject(() => this.reload()));
-      this.sleep(5000);
+      this.sleep(3000);
     } else {
       this.logInfo("Doing login ...");
       this.doLogin(dto.user, dto.pass);
-      this.sleep(5000);
+      this.sleep(3000);
       this.flow(() => cookieManager.store());
     }
 
@@ -79,7 +81,7 @@ class Scrohla {
 
   goTo(url) {
     this.logInfo(`Going to ${url}`);
-    return this.driver.get(url);
+    return this.getDriver().get(url);
   }
 
   scrollToPageBottom(){
@@ -96,18 +98,22 @@ class Scrohla {
   }
 
   findElements(xpath) {
-    return this.driver.findElements(this.By.xpath(xpath));
+    return this.getDriver().findElements(this.By.xpath(xpath));
   }
 
   findElement(arg, xpath) {
     if(!xpath) {
-      return this.driver.findElement(this.By.xpath(arg));
+      return this.getDriver().findElement(this.By.xpath(arg));
     } 
     return arg.findElement(this.By.xpath(xpath));
   }
 
   promiseAll(promises){
-    return this.webdriver.promise.all(promises);
+    return this.getWebdriver().promise.all(promises);
+  }
+
+  getWebdriver(){
+    return this.webdriver;
   }
 
   /**
@@ -116,15 +122,15 @@ class Scrohla {
    * @param {string} attrib 
    * @param {number} time 
    */
-  getAttrib(xpath, attrib, time) {
+  getAttrib(xpath, attrib, time = defaultTimeout) {
     return this.waitForLocated(xpath, time).then(elm => elm.getAttribute(attrib));
   }
 
   /**
    * Aguarda e retorna o elemento quando encontrado no dom
    */
-  waitForLocated(xpath, time = 30000) {
-    return this.driver.wait(this.until().elementLocated(this.By.xpath(xpath)), time);
+  waitForLocated(xpath, time = defaultTimeout) {
+    return this.getDriver().wait(this.until().elementLocated(this.By.xpath(xpath)), time);
   }
 
   /**
@@ -132,8 +138,8 @@ class Scrohla {
    * @param { string } xpath 
    * @param { number } time 
    */
-  waitForVisible(xpath, time = 30000) {
-    return this.driver.wait(this.until().elementIsVisible(this.findElement(xpath)), time );
+  waitForVisible(xpath, time = defaultTimeout) {
+    return this.getDriver().wait(this.until().elementIsVisible(this.findElement(xpath)), time );
   }
 
   /**
@@ -141,15 +147,35 @@ class Scrohla {
    * @param { string } xpath 
    * @param { number } time 
    */
-  waitForNotVisible(xpath, time = 30000) {
-    return this.driver.wait(this.until().elementIsNotVisible(this.findElement(xpath)), time );
+  waitForNotVisible(xpath, time = defaultTimeout) {
+    return this.getDriver().wait(this.until().elementIsNotVisible(this.findElement(xpath)), time );
   }
+
+
+  isElementLocated(xpath, time = defaultTimeout){
+    return this.waitForLocated(xpath, time)
+      .then( success => true )
+      .catch( error => false );
+  }
+
+  isElementVisible(xpath, time = defaultTimeout){
+    return this.waitForVisible(xpath, time)
+      .then( success => true )
+      .catch( error => false );
+  }
+
+  isElementNotVisible(xpath, time = defaultTimeout){
+    return this.waitForNotVisible(xpath, time)
+      .then( success => true )
+      .catch( error => false );
+  }
+
 
   /**
    * Pega a url corrente
    */
   getCurrentURL() {
-    return this.driver.getCurrentUrl();
+    return this.getDriver().getCurrentUrl();
   }
 
   until() {
@@ -161,14 +187,14 @@ class Scrohla {
   }
 
   quit() {
-    return this.driver.quit();
+    return this.getDriver().quit();
   }
 
   /** 
-   * Why not: this.driver.manage().timeouts().pageLoadTimeout(500000) ?
+   * Why not: this.getDriver().manage().timeouts().pageLoadTimeout(500000) ?
   */
   waitForDocumentReady(){
-    return this.driver.wait(() => this.executeJs("return document.readyState === 'complete'"));
+    return this.getDriver().wait(() => this.executeJs("return document.readyState === 'complete'"));
   }
 
   /**
@@ -177,21 +203,21 @@ class Scrohla {
    * @param {*} args 
    */
   executeJs(script, args) {
-    return this.driver.executeScript(script, args);
+    return this.getDriver().executeScript(script, args);
   }
 
   mouseMoveTo(xpath){
-    this.driver.actions().mouseMove(this.waitForLocated(xpath)).perform();
+    this.getDriver().actions().mouseMove(this.waitForLocated(xpath)).perform();
   }
 
   reload() {
     this.logInfo("Reloading ...");
-    this.driver.navigate().refresh();
+    this.getDriver().navigate().refresh();
   }
 
   sleep(ms = 10000) {
     this.logInfo(`Sleeping - ${ms/1000} seconds`);
-    this.driver.sleep(ms);
+    this.getDriver().sleep(ms);
   }
 
   getKey() {

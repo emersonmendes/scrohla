@@ -22,14 +22,23 @@ function collect(scrohla, sendResult){
         .then( e => e.getText() )
         .then( t => result.qualidade = t );
 
-    var complainings = driver
-        .wait(until.elementLocated(By.xpath("//*[contains(@class,'all-complaintsx')]//*[contains(@class,'medium-title')]")),10000)
-        .then( success => true, error => false );
+    const brandLogoXpath = "//*[@class='brand-logo']";
 
-    scrohla.flow( () => {
-        complainings.then( x => console.log(x) );
-        
-    });
+    scrohla.isElementVisible(brandLogoXpath)
+        .then( isVisible =>  result.isBrandLogoVisible = isVisible );
+    scrohla.isElementNotVisible(brandLogoXpath)
+        .then( isNotVisible =>  result.isBrandLogoNotVisible = isNotVisible );
+    scrohla.isElementLocated(brandLogoXpath)
+        .then( isLocated =>  result.isBrandLogoLocated = isLocated );
+
+    scrohla.isElementVisible(brandLogoXpath, 10)
+        .then( isVisible =>  result.isBrandLogoVisibleWith10ms = isVisible );
+    scrohla.isElementNotVisible(brandLogoXpath, 10)
+        .then( isNotVisible =>  result.isBrandLogoNotVisibleWith10ms = isNotVisible );
+    scrohla.isElementLocated(brandLogoXpath, 10)
+        .then( isLocated =>  result.isBrandLogoLocatedWith10ms = isLocated );
+
+    scrohla.flow( () => result.response = "Success!");
 
     scrohla.takeScreenshot();
 
