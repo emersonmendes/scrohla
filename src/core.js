@@ -47,7 +47,7 @@ class Core {
     const binary = new firefox.Binary(firefox.Channel.NIGHTLY);
     options.setBinary(binary);
     
-    if(config.browser.firefox.headless){
+    if(config.browser.headless){
       binary.addArguments("-headless");
       logger.info("firefox is in headless mode");
     }   
@@ -88,7 +88,7 @@ class Core {
       args = args.concat(this.params.args);
     }
 
-    if(config.browser.chrome.headless){
+    if(config.browser.headless){
       args.push("--headless");
       args.push("--disable-gpu");
       args.push("--no-sandbox");

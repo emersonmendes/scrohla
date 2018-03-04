@@ -11,6 +11,10 @@ class FileUtils {
     fs.writeFile(path, content, callback);
   }
 
+  static readFile(path, callback){
+    fs.readFile(path, "utf8", callback);
+  }
+
   static download(url, localPath){
     return new Promise( (resolve, reject) => {
       
