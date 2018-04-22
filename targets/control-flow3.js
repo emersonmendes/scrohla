@@ -10,9 +10,8 @@ function collect(scrohla, sendResult){
     // Abstração
     const driver = scrohla.getDriver();
     const By = scrohla.getBy();
-    const until = scrohla.until();
-    const flow = scrohla.getWebdriver().promise.controlFlow();
 
+    // como nao fazer
     // QUER CONCATENAR OS DADOS
     // ==========================================================
     
@@ -68,7 +67,7 @@ function collect(scrohla, sendResult){
 
                                                                     result.TUDO = `País: ${result.pais} | Capital: ${result.capital} | Catolicos(%): ${result.catolicos} | Protestantes(%): ${result.protestantes} | Total(%): ${result.catolicosMaisProtestantes}`;
 
-                                                                    sendResult(result)
+                                                                    sendResult(result);
                                                                 });
                                                             });
 

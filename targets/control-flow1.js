@@ -10,9 +10,8 @@ function collect(scrohla, sendResult){
     // Abstração
     const driver = scrohla.getDriver();
     const By = scrohla.getBy();
-    const until = scrohla.until();
-    const flow = scrohla.getWebdriver().promise.controlFlow();
 
+    // como nao fazer
     // INICIAL
     // ==========================================================
    
@@ -48,7 +47,7 @@ function collect(scrohla, sendResult){
                                             protestantElm.getText().then( protestant => {                                          
                                                 result.protestantes = protestant.split("%")[0];
                                                 result.catolicosMaisProtestantes = Number(result.catolicos) + Number(result.protestantes);
-                                                sendResult(result)
+                                                sendResult(result);
                                             });
                                         });
 

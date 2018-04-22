@@ -8,7 +8,6 @@ const target = {
 let sendResult;
 let driver;
 let By;
-let until;
 let flow;
     
 let result = {
@@ -22,7 +21,6 @@ function collect(scrohla, _sendResult){
     // Abstração
     driver = scrohla.getDriver();
     By = scrohla.getBy();
-    until = scrohla.until();
     flow = scrohla.getWebdriver().promise.controlFlow();
 
     // :)

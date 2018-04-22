@@ -45,7 +45,7 @@ function pesquisar(txt){
     driver.findElement(By.xpath("//*[@id='searchInput']")).then( inputElm =>  {
         inputElm.click();
         inputElm.sendKeys(txt);
-        console.log("LOG QUE TA DENTRO DA PROMISE E NO CONTROL FLOW [ 2 ]")
+        console.log("LOG QUE TA DENTRO DA PROMISE E NO CONTROL FLOW [ 2 ]");
     });
     driver.findElement(By.xpath("//button[@type='submit']")).then( btnElm => btnElm.click());
 }

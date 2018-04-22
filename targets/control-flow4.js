@@ -10,9 +10,9 @@ function collect(scrohla, sendResult){
     // Abstração
     const driver = scrohla.getDriver();
     const By = scrohla.getBy();
-    const until = scrohla.until();
     const flow = scrohla.getWebdriver().promise.controlFlow();
 
+    // como nao fazer
     // QUER TENTAR PROMISE ALL
     // ==========================================================
     

@@ -10,9 +10,8 @@ function collect(scrohla, sendResult){
     // Abstração
     const driver = scrohla.getDriver();
     const By = scrohla.getBy();
-    const until = scrohla.until();
-    const flow = scrohla.getWebdriver().promise.controlFlow();
-
+    
+    // como nao fazer
     // COMENTADO
     // ==========================================================
     
@@ -68,7 +67,7 @@ function collect(scrohla, sendResult){
                                                 // soma porcentagem de protestantes + catolicos
                                                 result.catolicosMaisProtestantes = Number(result.catolicos) + Number(result.protestantes);
                                                 // Envia o resultado para algum lugar
-                                                sendResult(result)
+                                                sendResult(result);
                                             });
                                         });
 
