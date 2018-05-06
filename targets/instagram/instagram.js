@@ -1,7 +1,7 @@
 "use strict";
 
-const logger = require("../src/logger");
-const credentials = require("./credentials.json").instagram;
+const logger = require("../../src/logger");
+const credentials = require("./../credentials.json").instagram;
 
 const target = {
     url : "https://www.instagram.com/fl0ripamilgrau/",

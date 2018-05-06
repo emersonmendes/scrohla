@@ -3,23 +3,23 @@
 // varios testes no site https://badssl.com/
 
 const target = {
-  url : "https://self-signed.badssl.com/",
-  execute : collect
+    url: "https://self-signed.badssl.com/",
+    execute: collect
 };
 
-function collect(scrohla, sendResult){
+function collect(scrohla, sendResult) {
 
     let result = {};
 
-    scrohla.start();  
+    scrohla.start();
 
-    scrohla.getText("//body").then( text => {
-        result.text = text.replace("\n"," ");
+    scrohla.getText("//body").then(text => {
+        result.text = text.replace("\n", " ");
     });
 
     scrohla.takeScreenshot();
 
-    scrohla.flow( () => sendResult(result) );
+    scrohla.flow(() => sendResult(result));
 
 }
 

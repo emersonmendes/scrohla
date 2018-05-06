@@ -1,40 +1,36 @@
 /* global window, _sharedData, XMLHttpRequest */
 "use strict";
 
-const logger = require("../src/logger");
-const credentials = require("./credentials.json").instagram;
-const { FileUtils } = require("../src/fileUtils");
+const logger = require("../../src/logger");
+const credentials = require("./../credentials.json").instagram;
+const { FileUtils } = require("../../src/fileUtils");
 
 const target = {
     url : "https://www.instagram.com/mario/",
-    loginURL : "https://www.instagram.com/accounts/login",
+    loginURL : "https://www.instagram.com/",
+    loginURLBKP : "https://www.instagram.com/accounts/login",
     execute : collect
 };
 
 function populatePosts (){
 
-    const media = _sharedData.entry_data.ProfilePage[0].user.media;
+    var media = _sharedData.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media;
 
     window.scrohla = { 
         totalPosts : media.count, 
-        posts : [] 
+        posts : media.edges
     };
-
-    media.nodes.forEach( item => window.scrohla.posts.push({ node : item }) );
     
     var origOpen = XMLHttpRequest.prototype.open;
         
     XMLHttpRequest.prototype.open = function() {
-    
         this.addEventListener("load", function() {
-            const response = JSON.parse(this.responseText);
+            var response = JSON.parse(this.responseText);
             if(response.data){
                 window.scrohla.posts = window.scrohla.posts.concat(response.data.user.edge_owner_to_timeline_media.edges);
             }
         });
-
         origOpen.apply(this, arguments);
-
     };
 
     return {
@@ -50,8 +46,6 @@ function scroll(scrohla){
     scrohla.executeJs(function(){
         window.scrollTo(0, 500000);
     });
-
-    scrohla.sleep(5000);
     
     scrohla.executeJs(function(){
         return { 
@@ -73,20 +67,25 @@ function getPosts(scrohla){
     });
 }
 
-function collect(scrohla, sendResult){
+function beforeLogin(scrohla){
+    scrohla.sleep(5000);
+    scrohla.takeScreenshot();
+    scrohla.click("//*[@id='react-root']/section/main/article/div[2]/div[2]/p/a", false); 
+}
 
+function login(scrohla){
     scrohla.authenticate({
         loginURL: target.loginURL,
-        user :{ 
-            xpath : "(//input[ @name='username' ])[1]", 
-            data : credentials.user
-        },
-        pass : { 
-            xpath : "(//input[@type='password'])[1]", 
-            data : credentials.pass
-        },
-        cookies : true
+        user : { xpath : "(//input[@name='username'])[1]", data : credentials.user },
+        pass : { xpath : "(//input[@type='password'])[1]", data : credentials.pass },
+        cookies : true,
+        beforeLogin : () => beforeLogin(scrohla)
     });
+}
+
+function collect(scrohla, sendResult){
+    scrohla.sleep(5000);
+    login(scrohla);
 
     scrohla.start();
 
@@ -105,24 +104,15 @@ function collect(scrohla, sendResult){
         getPosts(scrohla).then(posts => { 
 
             const jsonResult = `/home/emerson/Downloads/result_${new Date().getTime()}.json`;
-            
-            scrohla.flow( () => FileUtils.writeFile(jsonResult, JSON.stringify(posts, null, 4)));
+             
+            scrohla.flow(() => FileUtils.writeFile(jsonResult, JSON.stringify(posts, null, 4)));
 
-            const imagesPath = "/home/emerson/Downloads/images/";
-
-            for(let post of posts){
-                FileUtils.download((post.node.display_url || post.node.display_src), imagesPath);
-            }
-            
-            scrohla.sleep(posts.length * 0.5);
-
-            scrohla.flow( () => sendResult({
+            scrohla.flow(() => sendResult({
                 msg: "Coleta efetuada com sucesso.",
                 json : jsonResult,
-                images : imagesPath,
                 totalFound : result.totalFound,
                 totalPosts : result.totalPosts
-            }) );
+            }));
 
         });
 

@@ -7,38 +7,38 @@ const cluster = require("cluster");
 const port = process.env.PORT || 3001;
 
 if (cluster.isMaster) {
-  createWorkers();
+    createWorkers();
 } else {
-  init();
+    init();
 }
 
 function init() {
-  http.createServer((req, res) => {
-      const index = require("./index");
-      const queryData  = url.parse(req.url, true).query;
-      logger.info(`targetName: ${queryData.targetName}`);
-      logger.info(`targetUrl: ${queryData.targetUrl}`);
-      index.init(queryData.targetName, queryData.targetUrl);
-      res.writeHead(200);
-      res.end("OK!");
-  }).listen(port);
-  logger.info(`Worker listening on port ${port}`);
+    http.createServer((req, res) => {
+        const index = require("./index");
+        const queryData = url.parse(req.url, true).query;
+        logger.info(`targetName: ${queryData.targetName}`);
+        logger.info(`targetUrl: ${queryData.targetUrl}`);
+        index.init(queryData.targetName, queryData.targetUrl);
+        res.writeHead(200);
+        res.end("OK!");
+    }).listen(port);
+    logger.info(`Worker listening on port ${port}`);
 }
 
-function createWorkers(){
+function createWorkers() {
 
-  const numCPUs = require("os").cpus().length;
-  
-  logger.info("Creating workers. Cpus:",numCPUs);
+    const numCPUs = require("os").cpus().length;
 
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+    logger.info("Creating workers. Cpus:", numCPUs);
 
-  cluster.on("exit", (worker, code) => {
-      logger.info(`Worker died with code: ${code}`);
-      logger.info("Creating new worker.");
-      cluster.fork();
-  });
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+
+    cluster.on("exit", (worker, code) => {
+        logger.info(`Worker died with code: ${code}`);
+        logger.info("Creating new worker.");
+        cluster.fork();
+    });
 
 }
