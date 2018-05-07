@@ -7,13 +7,15 @@ const { FileUtils } = require("../../src/fileUtils");
 
 const target = {
     url: "https://www.instagram.com/mario/",
-    loginURL: "https://www.instagram.com/",
-    loginURLBKP: "https://www.instagram.com/accounts/login",
-    execute: collect
+    loginURL: "https://www.instagram.com/accounts/login",
+    execute: collect,
+    custom: {
+        userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50 Safari/537.36"
+    }
 };
 
 function collect(scrohla, sendResult) {
-    
+
     login(scrohla);
 
     scrohla.start();
@@ -50,8 +52,8 @@ function collect(scrohla, sendResult) {
 }
 
 function beforeLogin(scrohla) {
+    scrohla.sleep(3000);
     scrohla.takeScreenshot();
-    scrohla.click("//*[@id='react-root']/section/main/article/div[2]/div[2]/p/a", false);
 }
 
 function login(scrohla) {
