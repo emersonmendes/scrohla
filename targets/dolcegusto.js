@@ -5,44 +5,44 @@ const credentials = require("./credentials.json").dolcegusto;
 const CODIGO = "7cfc7hljqcrg";
 
 const target = {
-  url : "https://www.nescafe-dolcegusto.com.br/mybonus/",
-  execute : collect
+    url: "https://www.nescafe-dolcegusto.com.br/mybonus/",
+    execute: collect
 };
 
-function collect(scrohla, sendResult){
+function collect(scrohla, sendResult) {
 
-  let result = {};
+    let result = {};
 
-  scrohla.authenticate({
-    loginURL: target.url,
-    user :{ 
-        xpath : "//input[@id='email']", 
-        data : credentials.user
-    },
-    pass : { 
-        xpath : "//input[@id='pass']", 
-        data : credentials.pass
-    },
-    beforeLogin : () => {
-      scrohla.mouseMoveTo("//div[@id='header-account']");
-    },
-    cookies : true
-  });
-
-  scrohla.start();
-
-  scrohla.type(CODIGO.replace(/ /g,"").toUpperCase(),"//input[@id='coupon_code']");
-  scrohla.click("//*[@id='pcm-codes-form']//button");
-
-  scrohla.waitForLocated("//*[@class='error-msg']",1505000)
-    .then(()=>{
-      result.erro = `Codigo ${CODIGO} está inválido ou já foi utilizado!`;
-    })
-    .catch(() => { 
-      result.msg = `Codigo ${CODIGO} inserido com sucesso!`;
+    scrohla.authenticate({
+        loginURL: target.url,
+        user: {
+            xpath: "//input[@id='email']",
+            data: credentials.user
+        },
+        pass: {
+            xpath: "//input[@id='pass']",
+            data: credentials.pass
+        },
+        beforeLogin: () => {
+            scrohla.mouseMoveTo("//div[@id='header-account']");
+        },
+        cookies: true
     });
- 
-  scrohla.flow( () => sendResult(result) );
+
+    scrohla.start();
+
+    scrohla.type(CODIGO.replace(/ /g, "").toUpperCase(), "//input[@id='coupon_code']");
+    scrohla.click("//*[@id='pcm-codes-form']//button");
+
+    scrohla.waitForLocated("//*[@class='error-msg']", 1505000)
+        .then(() => {
+            result.erro = `Codigo ${CODIGO} está inválido ou já foi utilizado!`;
+        })
+        .catch(() => {
+            result.msg = `Codigo ${CODIGO} inserido com sucesso!`;
+        });
+
+    scrohla.flow(() => sendResult(result));
 
 }
 

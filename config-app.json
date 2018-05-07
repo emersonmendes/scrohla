@@ -1,41 +1,41 @@
 {
-  "browser" : {
-    "name" : "chrome",
-    "headless" : false,
-    "proxy" : {
-      "ip": "",
-      "port" : ""
+    "browser": {
+        "name": "phantom",
+        "headless": false,
+        "proxy": {
+            "ip": "",
+            "port": ""
+        },
+        "resolution": {
+            "w": 1280,
+            "h": 1024
+        },
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+        "logBrowser": true,
+        "firefox": {
+            "args": []
+        },
+        "chrome": {
+            "args": [
+                "--start-maximized",
+                "--hide-scrollbars",
+                "--disable-notifications"
+            ]
+        },
+        "phantom": {
+            "binaryPath": "/home/emerson/Downloads/phantomjs-2.1.1-linux-x86_64/bin/phantomjs",
+            "args": [
+                "--web-security=false",
+                "--ignore-ssl-errors=true",
+                "--cookies-file=/home/emerson/Downloads/cookies.txt",
+                "--debug=true",
+                "--webdriver-logfile=/home/emerson/Downloads/webdriver.log"
+            ]
+        }
     },
-    "resolution" : {
-      "w" : 1280,
-      "h" : 1024
+    "screenshot": {
+        "path": "/home/emerson/Downloads",
+        "name": "screenshot.png"
     },
-    "userAgent" : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
-    "logBrowser" : true,
-    "firefox" : {
-      "args" : [ ]
-    },
-    "chrome" : {
-      "args" : [ 
-        "--start-maximized",
-        "--hide-scrollbars",
-        "--disable-notifications"
-      ]
-    },
-    "phantom" : {
-      "binaryPath" : "/home/emerson/Downloads/phantomjs-2.1.1-linux-x86_64/bin/phantomjs",
-      "args" : [
-        "--web-security=false",
-        "--ignore-ssl-errors=true",
-        "--cookies-file=/home/emerson/Downloads/cookies.txt",
-        "--debug=true",
-        "--webdriver-logfile=/home/emerson/Downloads/webdriver.log"
-      ]
-    }
-  },
-  "screenshot" : { 
-    "path" : "/home/emerson/Downloads",
-    "name" : "screenshot.png"
-  },
-  "cookiesPath" : "/tmp/schrola/cookies"
+    "cookiesPath": "/tmp/schrola/cookies"
 }
