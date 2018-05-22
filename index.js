@@ -12,7 +12,7 @@ const cleanCookies = function(scrohla, target){
     ).clean();
 };
 
-function endProcess(scrohla){
+function endCollect(scrohla){
     
     if(config.browser.logBrowser){
         scrohla.sleep(5000);
@@ -26,11 +26,10 @@ function endProcess(scrohla){
     
     scrohla.quit();
     scrohla.flow(() => console.timeEnd("Process time"));  // eslint-disable-line 
-    scrohla.flow(() => process.exit());
    
 }
 
-function init(targetName, targetUrl){
+function init(targetName, targetUrl, cb){
 
     console.time("Process time");  // eslint-disable-line 
     
@@ -49,18 +48,27 @@ function init(targetName, targetUrl){
     try {
         target.execute(scrohla,(result) => {
             logger.info(`Result => ${JSON.stringify(result,null,4)}`);
-            endProcess(scrohla);
+            cb && cb(result);
+            endCollect(scrohla);
         });
     } catch(err){
         target.auth && cleanCookies(scrohla,target);
         logger.error("Erro interno :( Details: ", err);
-        endProcess(scrohla);
+        endCollect(scrohla);
     } 
 
 }
 
-const targetName = process.argv[2];
-const targetUrl = process.argv[3];
+function getParam(param){
+    const index = process.argv.findIndex( arg => arg === param );
+    if(index !== -1){
+        return process.argv[index + 1];
+    }
+    return null;
+}
+
+const targetName = getParam("--target");
+const targetUrl = getParam("--url");
 
 if(targetName || targetUrl){
     init(targetName, targetUrl); 
