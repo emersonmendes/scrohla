@@ -2,7 +2,7 @@
 
 const credentials = require("./credentials.json").dolcegusto;
 
-const CODIGO = "7cfc7hljqcrg";
+const CODIGO = "e4ww99cjk79w";
 
 const target = {
     url: "https://www.nescafe-dolcegusto.com.br/mybonus/",

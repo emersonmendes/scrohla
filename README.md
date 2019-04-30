@@ -4,11 +4,6 @@
 
     npm install
 
-### Run tests
-
-    npm test 
-    (it needs mocha to be installed)
-
 ### Start project
 
     npm start -- --target target-name 
