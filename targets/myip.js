@@ -1,38 +1,23 @@
 "use strict";
 
-const target = {
-    url: "https://whatismyip.com.br/",
-    execute: collect
-};
-
-function collect(scrohla, sendResult) {
+ const collect = async function(scrohla, sendResult) {
 
     scrohla.start();
 
-    let result = {};
-
-    scrohla.getText("(//*[@id='content']//table//tr[1]//td[2])[1]").then(ip => {
-        result.ip = ip;
-    });
-
-    scrohla.getText("(//*[@id='content']//table//tr[3]//td[2])[1]").then(browser => {
-        result.browser = browser;
-    });
-
-    scrohla.getText("(//*[@id='content']//table//tr[4]//td[2])[1]").then(platform => {
-        result.platform = platform;
-    });
-
-    scrohla.getText("(//*[@id='content']//table//tr[6]/td[2])[1]").then(country => {
-        result.country = country;
-    });
+    const result = {
+        ip: await scrohla.getText("(//*[@id='content']//table//tr[1]//td[2])[1]"),
+        browser: await scrohla.getText("(//*[@id='content']//table//tr[3]//td[2])[1]"),
+        platform: await scrohla.getText("(//*[@id='content']//table//tr[4]//td[2])[1]"),
+        country: await scrohla.getText("(//*[@id='content']//table//tr[6]/td[2])[1]")
+    };
 
     scrohla.takeScreenshot();
 
-    scrohla.flow(() => {
-        sendResult(result);
-    });
+    sendResult(result);
 
 }
 
-exports.target = target;
+exports.target = {
+    url: "https://whatismyip.com.br/",
+    execute: collect
+};
