@@ -10,18 +10,17 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "chromedriver": "^80.0.1",
     "express": "^4.16.2",
+    "geckodriver": "^1.19.1",
     "moment": "^2.20.1",
-    "winston": "^2.3.1",
     "selenium-webdriver": "^3.6.0",
-    "geckodriver": "^1.10.0",
-    "chromedriver": "^2.35.0"
+    "winston": "^2.3.1"
   },
   "scripts": {
     "server": "node server.js",
     "start": "node index.js",
     "start-debug": "node --inspect-brk index.js"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
