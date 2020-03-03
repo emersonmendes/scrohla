@@ -12,24 +12,23 @@ const cleanCookies = function(scrohla, target){
     ).clean();
 };
 
-function endCollect(scrohla){
+async function endCollect(scrohla){
     
     if(config.browser.logBrowser){
-        scrohla.sleep(5000);
-        scrohla.flow(() => logger.warn("Log do browser capturado durante coleta:"));
-        scrohla.getDriver().manage().logs().get("browser").then(function(entries) {                
-            entries.forEach(entry =>  { 
-                scrohla.flow( () => logger.warn(`[ LOG BROWSER ] [${entry.level.name}] ${entry.message}`) );
-            });  
-        });        
+        await scrohla.sleep(5000);
+        await scrohla.flow(() => logger.warn("Log do browser capturado durante coleta:"));
+        const entries = await scrohla.getDriver().manage().logs().get("browser"); 
+        entries.forEach(entry =>  { 
+            logger.warn(`[ LOG BROWSER ] [${entry.level.name}] ${entry.message}`);
+        });  
     } 
     
-    scrohla.quit();
-    scrohla.flow(() => console.timeEnd("Process time"));  // eslint-disable-line 
+    await scrohla.quit();
+    await scrohla.flow(() => console.timeEnd("Process time"));  // eslint-disable-line 
    
 }
 
-function init(targetName, targetUrl, cb){
+async function init(targetName, targetUrl, cb){
 
     console.time("Process time");  // eslint-disable-line 
     
@@ -46,15 +45,15 @@ function init(targetName, targetUrl, cb){
     });
 
     try {
-        target.execute(scrohla,(result) => {
+        await target.execute(scrohla, async (result) => {
             logger.info(`Result => ${JSON.stringify(result,null,4)}`);
-            cb && cb(result);
-            endCollect(scrohla);
+            cb && await cb(result);
+            await endCollect(scrohla);
         });
     } catch(err){
         target.auth && cleanCookies(scrohla,target);
         logger.error("Erro interno :( Details: ", err);
-        endCollect(scrohla);
+        await endCollect(scrohla);
     } 
 
 }

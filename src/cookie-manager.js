@@ -24,6 +24,7 @@ class CookieManager {
             }
             fs.writeFile(this.cookiesFile, cookiesStr.slice(0,-1), err =>{
                 if(err){
+                    logger.warn(err);
                     logger.warn(`Não conseguiu salvar os cookies. Verifique se o diretorio '${config.cookiesPath}' existe.`);
                 }
             });
