@@ -68,19 +68,24 @@ class Scrohla {
         await element.sendKeys(text);
     }
 
-    submit(xpath) {
-        this.waitForLocated(xpath).then(elm => elm.submit());
+    async submit(xpath) {
+        const element = await this.waitForLocated(xpath);
+        element.submit();
     }
 
     async click(xpath, required = true) {
+        
         await this.waitForVisible(xpath);
-        await this.findElement(xpath)
-            .then(elm => elm.click())
-            .catch(() => {
-                if (required) {
-                    throw Error(`Não conseguiu achar o xpath: ${xpath}`);
-                }
-            });
+        
+        try {
+            const element = await this.findElement(xpath);
+            element.click();
+        } catch (err){
+            if (required) {
+                throw Error(`Não conseguiu achar o xpath: ${xpath}`);
+            }
+        }
+            
     }
 
     async goTo(url) {
@@ -88,8 +93,8 @@ class Scrohla {
         return await this.getDriver().get(url);
     }
 
-    scrollToPageBottom() {
-        this.executeJs("window.scrollTo(0,document.body.scrollHeight);", "");
+    async scrollToPageBottom() {
+        return await this.executeJs("window.scrollTo(0,document.body.scrollHeight);", "");
     }
 
     /**
@@ -97,12 +102,13 @@ class Scrohla {
      * @param {string} xpath 
      * @param {number} time 
      */
-    getText(xpath, time) {
-        return this.waitForLocated(xpath, time).then(elm => elm.getText());
+    async getText(xpath, time) {
+        const element = await this.waitForLocated(xpath, time);
+        return element.getText();
     }
 
-    findElements(xpath) {
-        return this.getDriver().findElements(this.By.xpath(xpath));
+    async findElements(xpath) {
+        return await this.getDriver().findElements(this.By.xpath(xpath));
     }
 
     async findElement(arg, xpath) {
@@ -110,10 +116,6 @@ class Scrohla {
             return await this.getDriver().findElement(this.By.xpath(arg));
         }
         return await arg.findElement(this.By.xpath(xpath));
-    }
-
-    promiseAll(promises) {
-        return this.getWebdriver().promise.all(promises);
     }
 
     getWebdriver() {
@@ -126,8 +128,9 @@ class Scrohla {
      * @param {string} attrib 
      * @param {number} time 
      */
-    getAttrib(xpath, attrib, time = defaultTimeout) {
-        return this.waitForLocated(xpath, time).then(elm => elm.getAttribute(attrib));
+    async getAttrib(xpath, attrib, time = defaultTimeout) {
+        const element = await this.waitForLocated(xpath, time);
+        return element.getAttribute(attrib);
     }
 
     /**
@@ -158,29 +161,31 @@ class Scrohla {
         return await this.getDriver().wait(this.until().elementIsNotVisible(element), time);
     }
 
-    isElementLocated(xpath, time = defaultTimeout) {
-        return this.waitForLocated(xpath, time)
-            .then(() => true)
-            .catch(() => false);
+    async isElementLocated(xpath, time = defaultTimeout) {
+        try {
+            await this.waitForLocated(xpath, time);
+            return true;
+        } catch(err){
+            return false;
+        }
     }
 
-    isElementVisible(xpath, time = defaultTimeout) {
-        return this.waitForVisible(xpath, time)
-            .then(() => true)
-            .catch(() => false);
+    async isElementVisible(xpath, time = defaultTimeout) {
+        try {
+            await this.waitForVisible(xpath, time);
+            return true;
+        } catch(err){
+            return false;
+        }
     }
 
-    isElementNotVisible(xpath, time = defaultTimeout) {
-        return this.waitForNotVisible(xpath, time)
-            .then(() => true)
-            .catch(() => false);
-    }
-
-    /**
-     * Pega a url corrente
-     */
-    getCurrentURL() {
-        return this.getDriver().getCurrentUrl();
+    async isElementNotVisible(xpath, time = defaultTimeout) {
+        try {
+            await this.waitForNotVisible(xpath, time);
+            return true;
+        } catch(err){
+            return false;
+        }
     }
 
     until() {
@@ -207,8 +212,8 @@ class Scrohla {
      * @param {(function|string)} script - JavaScript a ser executado no browser
      * @param {*} args 
      */
-    executeJs(script, args) {
-        return this.getDriver().executeScript(script, args);
+    async executeJs(script, args) {
+        return await this.getDriver().executeScript(script, args);
     }
 
     async mouseMoveTo(xpath) {
@@ -248,11 +253,7 @@ class Scrohla {
         await this.goTo(targetURL);
     }
 
-    takeScreenshotBase64() {
-        return this.driver.takeScreenshot();
-    }
-
-    takeScreenshot() {
+    async takeScreenshot() {
 
         const screenshot = this.config.screenshot;
 
@@ -261,12 +262,11 @@ class Scrohla {
             return;
         }
 
-        this.driver.takeScreenshot().then((data) => {
-            const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
-            fs.writeFile(path, data.replace(/^data:image\/png;base64,/, ""), "base64", (err) => {
-                if (err) throw err;
-                logger.info("Screenshot saved in: " + path);
-            });
+        const data = await this.driver.takeScreenshot();
+        const path = screenshot.path + "/" + new Date().getTime() + "_" + screenshot.name;
+        fs.writeFile(path, data.replace(/^data:image\/png;base64,/, ""), "base64", (err) => {
+            if (err) throw err;
+            logger.info("Screenshot saved in: " + path);
         });
 
     }

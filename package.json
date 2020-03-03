@@ -14,6 +14,7 @@
     "express": "^4.16.2",
     "geckodriver": "^1.19.1",
     "moment": "^2.20.1",
+    "request": "^2.88.2",
     "selenium-webdriver": "^3.6.0",
     "winston": "^2.3.1"
   },

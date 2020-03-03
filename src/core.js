@@ -3,6 +3,7 @@
 const webdriver = require("selenium-webdriver");
 const logger = require("./logger");
 const config = require("../config-app.json");
+
 class Core {
 
     constructor(params) {
@@ -69,7 +70,7 @@ class Core {
         let defaultArgs = config.browser.phantom.args;
 
         caps.set("phantomjs.cli.args", defaultArgs);
-        caps.set("phantomjs.page.settings.userAgent", this.mountUserAgent());
+        caps.set("phantomjs.page.settings.userAgent", this.buildUserAgent());
 
         builder.withCapabilities(caps);
         builder.forBrowser("phantomjs");
@@ -80,7 +81,7 @@ class Core {
     configureChrome(builder) {
 
         let args = config.browser.chrome.args;
-        args.push(`--user-agent='${this.mountUserAgent()}'`);
+        args.push(`--user-agent='${this.buildUserAgent()}'`);
 
         if (this.params.args) {
             args = args.concat(this.params.args);
@@ -109,7 +110,7 @@ class Core {
 
     }
 
-    mountUserAgent() {
+    buildUserAgent() {
         let userAgent = config.browser.userAgent;
         const custom = this.params.custom;
         if (custom && custom.userAgent) {
