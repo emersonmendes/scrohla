@@ -8,40 +8,32 @@ const target = {
     execute: collect
 };
 
-function collect(scrohla, sendResult) {
+const authData = {
+    loginURL: target.loginURL,
+    user: {
+        xpath: "(//input[ @id='username' ])[1]",
+        data: credentials.user
+    },
+    pass: {
+        xpath: "(//input[@id='password'])[1]",
+        data: credentials.pass
+    },
+    cookies: false
+};
+
+async function collect(scrohla, sendResult) {
 
     let result = {};
 
-    scrohla.authenticate({
-        loginURL: target.loginURL,
-        user: {
-            xpath: "(//input[ @id='session_key-login' ])[1]",
-            data: credentials.user
-        },
-        pass: {
-            xpath: "(//input[@type='password'])[1]",
-            data: credentials.pass
-        },
-        cookies: false
-    });
+    await scrohla.authenticate(authData);
+    await scrohla.start();
+    await scrohla.takeScreenshot();
 
-    scrohla.start();
+    result.nome = await scrohla.getText("(//*[contains(@class,'t-24')])[1]");
+    result.cargo = await scrohla.getText("(//*[contains(@class,'t-18')])[1]");
+    result.localizacao = await scrohla.getText("(//*[contains(@class,'t-16')])[1]");
 
-    scrohla.takeScreenshot();
-
-    scrohla.getText("(//h1[contains(@class,'pv-top-card-section__name')])[1]").then(name => {
-        result.nome = name;
-    });
-
-    scrohla.getText("(//h2[contains(@class,'pv-top-card-section__headline')])[1]").then(headline => {
-        result.cargo = headline;
-    });
-
-    scrohla.getText("(//h3[contains(@class,'pv-top-card-section__location ')])[1]").then(location => {
-        result.localizacao = location;
-    });
-
-    scrohla.flow(() => sendResult(result));
+    sendResult(result);
 
 }
 

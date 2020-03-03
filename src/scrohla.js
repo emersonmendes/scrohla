@@ -14,18 +14,17 @@ class Scrohla {
         const core = new Core(params);
         this.driver = core.getDriver();
         this.webdriver = core.getWebdriver();
-        this.controlFlow = this.webdriver.promise.controlFlow();
         this.config = core.getConfig();
         this.By = this.webdriver.By;
         this.Key = this.webdriver.Key;
     }
 
-    async logInfo(text) {
-        await this.flow(() => logger.info(text));
+    logInfo(text) {
+        logger.info(text);
     }
 
-    async logWarn(text) {
-        await this.flow(() => logger.warn(text));
+    logWarn(text) {
+        logger.warn(text);
     }
 
     async doLogin(user, pass) {
@@ -40,19 +39,19 @@ class Scrohla {
             await this.goTo(dto.loginURL);
         }
 
-        dto.beforeLogin && this.flow(dto.beforeLogin);
+        dto.beforeLogin && dto.beforeLogin();
         const cookies = `${this.params.targetName}-${dto.user.data}`;
         const cookieManager = new CookieManager(cookies, this.getDriver());
 
         if (dto.cookies && cookieManager.exists()) {
-            await this.logInfo(`Using cookies: ${cookies}`);
-            await this.flow(() => cookieManager.inject(() => this.reload()));
+            this.logInfo(`Using cookies: ${cookies}`);
+            await cookieManager.inject(() => this.reload());
             await this.sleep(3000);
         } else {
-            await this.logInfo("Doing login ...");
+            this.logInfo("Doing login ...");
             await this.doLogin(dto.user, dto.pass);
             await this.sleep(3000);
-            await this.flow(() => cookieManager.store());
+            await cookieManager.store();
         }
 
     }
@@ -192,8 +191,9 @@ class Scrohla {
         return this.webdriver.until;
     }
 
-    async flow(callback) {
-        return await this.controlFlow.execute(callback);
+    flow(callback) {
+        logger.warn('"this.webdriver.promise.controlFlow()" was removed from Selenium 4, please dont use this method!');
+        callback && callback();
     }
 
     async quit() {
@@ -221,12 +221,12 @@ class Scrohla {
     }
 
     async reload() {
-        await this.logInfo("Reloading ...");
+        this.logInfo("Reloading ...");
         await this.getDriver().navigate().refresh();
     }
 
     async sleep(ms = 10000) {
-        await this.logInfo(`Sleeping - ${ms / 1000} seconds`);
+        this.logInfo(`Sleeping - ${ms / 1000} seconds`);
         return await this.getDriver().sleep(ms);
     }
 

@@ -14,21 +14,20 @@ class CookieManager {
         this.cookiesFile = path.join(config.cookiesPath, fileName);
     }
 
-    store(){
-        this.driver.manage().getCookies().then(cookies => {
-            let cookiesStr = "";
-            for(const cookie of cookies){
-                cookiesStr = cookiesStr
-                    .concat(JSON.stringify(cookie))
-                    .concat(COOKIE_SEPARATOR);
+    async store(){
+        const cookies = await this.driver.manage().getCookies(); 
+        let cookiesStr = "";
+        for(const cookie of cookies){
+            cookiesStr = cookiesStr
+                .concat(JSON.stringify(cookie))
+                .concat(COOKIE_SEPARATOR);
+        }
+        await fs.writeFile(this.cookiesFile, cookiesStr.slice(0,-1), err => {
+            if(err){
+                logger.warn(err);
+                logger.warn(`Não conseguiu salvar os cookies. Verifique se o diretorio '${config.cookiesPath}' existe.`);
             }
-            fs.writeFile(this.cookiesFile, cookiesStr.slice(0,-1), err =>{
-                if(err){
-                    logger.warn(err);
-                    logger.warn(`Não conseguiu salvar os cookies. Verifique se o diretorio '${config.cookiesPath}' existe.`);
-                }
-            });
-        }); 
+        });
     }
 
     exists(){

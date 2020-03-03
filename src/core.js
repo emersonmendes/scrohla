@@ -3,6 +3,7 @@
 const webdriver = require("selenium-webdriver");
 const logger = require("./logger");
 const config = require("../config-app.json");
+const TIMEOUT = 500000;
 
 class Core {
 
@@ -32,9 +33,13 @@ class Core {
 
     configureDriver() {
         const resolution = config.browser.resolution;
-        this.driver.manage().window().setSize(resolution.w, resolution.h);
+        this.driver.manage().window().setRect({ width: resolution.w, height: resolution.h });
         this.driver.manage().window().maximize();
-        this.driver.manage().timeouts().pageLoadTimeout(500000);
+        this.driver.manage().setTimeouts({
+            implicit: TIMEOUT, 
+            pageLoad: TIMEOUT, 
+            script: TIMEOUT
+        });
     }
 
     configureFirefox(builder) {
@@ -102,7 +107,8 @@ class Core {
         builder.withCapabilities({
             "browserName": "chrome",
             "chromeOptions": {
-                "args": args
+                "args": args,
+                "w3c" : false
             }
         });
 

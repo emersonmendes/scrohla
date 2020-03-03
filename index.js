@@ -16,7 +16,7 @@ async function endCollect(scrohla){
     
     if(config.browser.logBrowser){
         await scrohla.sleep(5000);
-        await scrohla.flow(() => logger.warn("Log do browser capturado durante coleta:"));
+        logger.warn("Log do browser capturado durante coleta:");
         const entries = await scrohla.getDriver().manage().logs().get("browser"); 
         entries.forEach(entry =>  { 
             logger.warn(`[ LOG BROWSER ] [${entry.level.name}] ${entry.message}`);
@@ -24,7 +24,7 @@ async function endCollect(scrohla){
     } 
     
     await scrohla.quit();
-    await scrohla.flow(() => console.timeEnd("Process time"));  // eslint-disable-line 
+    console.timeEnd("Process time");  // eslint-disable-line 
    
 }
 
