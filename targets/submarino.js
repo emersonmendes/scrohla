@@ -1,37 +1,44 @@
 "use strict";
 
+const logger = require("../src/logger");
+
 const target = {
     url: "https://www.submarino.com.br/produto/9417912",
     key: "submarino_products",
     execute: collect
 };
 
-function collect(scrohla, sendResult) {
+async function getPrice(scrohla){
+
+    let price = "";
+
+    try {
+        price = await scrohla.getText("//span[contains(@class,'price__SalesPrice')]");
+    } catch (e) {
+        logger.warn('Não achou a classe price__SalesPrice, tentando por sales-price!');
+        price = await scrohla.getText("//span[contains(@class,'sales-price')]");
+    }
+
+    return Number(price.replace("R$ ", "").replace(",", "."));
+
+}
+
+async function collect(scrohla, sendResult) {
 
     let result = {
         url: target.url,
         date: new Date().getTime()
     };
 
-    scrohla.start();
+    await scrohla.start();
 
-    scrohla.getText("//span[@class='product-id']").then(cod => {
-        result.cod = cod && cod.replace(/[^\d]/g, "");
-    });
-
-    scrohla.getText("//h1[@class='product-name']").then(name => {
-        result.name = name;
-    });
-
-    scrohla.getText("//p[@class='sales-price']").then(price => {
-        result.price = price && Number(price.replace("R$ ", "").replace(",", "."));
-    });
+    result.cod = target.url.replace(/[^\d]/g, "");
+    result.name = await scrohla.getText("//h1[@id='product-name-default']");
+    result.price = await getPrice(scrohla);
 
     scrohla.takeScreenshot();
 
-    scrohla.flow(() => {
-        sendResult(result);
-    });
+    sendResult(result);
 
 }
 
