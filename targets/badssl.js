@@ -7,19 +7,18 @@ const target = {
     execute: collect
 };
 
-function collect(scrohla, sendResult) {
+async function collect(scrohla, sendResult) {
 
     let result = {};
 
-    scrohla.start();
+    await scrohla.start();
 
-    scrohla.getText("//body").then(text => {
-        result.text = text.replace("\n", " ");
-    });
+    result.text = await scrohla.getText("//body");
+    result.text = result.text.replace("\n", " ");
 
-    scrohla.takeScreenshot();
+    await scrohla.takeScreenshot();
 
-    scrohla.flow(() => sendResult(result));
+    sendResult(result);
 
 }
 
