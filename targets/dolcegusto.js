@@ -1,7 +1,5 @@
 "use strict";
 
-const credentials = require("./credentials.json").dolcegusto;
-
 const CODIGO = "e4ww99cjk79w";
 
 const target = {
@@ -15,14 +13,9 @@ function collect(scrohla, sendResult) {
 
     scrohla.authenticate({
         loginURL: target.url,
-        user: {
-            xpath: "//input[@id='email']",
-            data: credentials.user
-        },
-        pass: {
-            xpath: "//input[@id='pass']",
-            data: credentials.pass
-        },
+        credentialsName: 'dolcegusto',
+        user: { xpath: "//input[@id='email']" },
+        pass: { xpath: "//input[@id='pass']" },
         beforeLogin: () => {
             scrohla.mouseMoveTo("//div[@id='header-account']");
         },

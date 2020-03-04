@@ -1,7 +1,5 @@
 "use strict";
 
-const credentials = require("./credentials.json").twitter;
-
 const target = {
     url : "https://www.twitter.com/flamengo",
     loginURL : "https://twitter.com/login",
@@ -12,13 +10,12 @@ function collect(scrohla, sendResult){
 
     scrohla.authenticate({
         loginURL: target.loginURL,
+        credentialsName: 'twitter',
         user :{ 
-            xpath : "//input[ @class='js-username-field email-input js-initial-focus' ]", 
-            data : credentials.user
+            xpath : "//input[ @class='js-username-field email-input js-initial-focus' ]"
         },
         pass : { 
-            xpath : "//input[@class='js-password-field']", 
-            data : credentials.pass
+            xpath : "//input[@class='js-password-field']"
         },
         cookies : true
     });

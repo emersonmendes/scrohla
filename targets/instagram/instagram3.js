@@ -1,7 +1,6 @@
 "use strict";
 
 const logger = require("../../src/logger");
-const credentials = require("./../credentials.json").instagram;
 const { FileUtils } = require("../../src/fileUtils");
 
 const target = {
@@ -48,13 +47,12 @@ function populateUsernames(xpath, beforeSize) {
 function authenticate() {
     scrohla.authenticate({
         loginURL: target.loginURL,
+        credentialsName: 'instagram',
         user: {
-            xpath: "(//input[ @name='username' ])[1]",
-            data: credentials.user
+            xpath: "(//input[ @name='username' ])[1]"
         },
         pass: {
-            xpath: "(//input[@type='password'])[1]",
-            data: credentials.pass
+            xpath: "(//input[@type='password'])[1]"
         },
         cookies: true
     });

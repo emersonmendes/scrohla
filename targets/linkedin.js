@@ -1,7 +1,5 @@
 "use strict";
 
-const credentials = require("./credentials.json").linkedin;
-
 const target = {
     url: "https://www.linkedin.com/in/williamhgates/",
     loginURL: "https://www.linkedin.com/uas/login",
@@ -10,14 +8,9 @@ const target = {
 
 const authData = {
     loginURL: target.loginURL,
-    user: {
-        xpath: "(//input[ @id='username' ])[1]",
-        data: credentials.user
-    },
-    pass: {
-        xpath: "(//input[@id='password'])[1]",
-        data: credentials.pass
-    },
+    credentialsName: 'linkedin',
+    user: { xpath: "(//input[ @id='username' ])[1]" },
+    pass: { xpath: "(//input[@id='password'])[1]" },
     cookies: false
 };
 

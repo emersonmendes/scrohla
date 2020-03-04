@@ -1,7 +1,5 @@
 "use strict";
 
-const credentials = require("./credentials.json").facebook;
-
 const target = {
     url: "https://www.facebook.com/pg/FlamengoOficial",
     loginURL: "https://www.facebook.com/",
@@ -14,13 +12,12 @@ function collect(scrohla, sendResult) {
 
     scrohla.authenticate({
         loginURL: target.loginURL,
+        credentialsName: 'facebook',
         user: {
-            xpath: "(//input[ @type='email' ])[1]",
-            data: credentials.user
+            xpath: "(//input[ @type='email' ])[1]"
         },
         pass: {
-            xpath: "(//input[@type='password'])[1]",
-            data: credentials.pass
+            xpath: "(//input[@type='password'])[1]"
         },
         cookies: true
     });

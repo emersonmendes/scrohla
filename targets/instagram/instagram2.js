@@ -2,7 +2,6 @@
 "use strict";
 
 const logger = require("../../src/logger");
-const credentials = require("./../credentials.json").instagram;
 const { FileUtils } = require("../../src/fileUtils");
 
 const target = {
@@ -59,8 +58,9 @@ function beforeLogin(scrohla) {
 function login(scrohla) {
     scrohla.authenticate({
         loginURL: target.loginURL,
-        user: { xpath: "(//input[@name='username'])[1]", data: credentials.user },
-        pass: { xpath: "(//input[@type='password'])[1]", data: credentials.pass },
+        credentialsName: 'instagram',
+        user: { xpath: "(//input[@name='username'])[1]" },
+        pass: { xpath: "(//input[@type='password'])[1]" },
         cookies: true,
         beforeLogin: () => beforeLogin(scrohla)
     });

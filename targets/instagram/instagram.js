@@ -1,7 +1,6 @@
 "use strict";
 
 const logger = require("../../src/logger");
-const credentials = require("./../credentials.json").instagram;
 
 let _scrohla;
 
@@ -16,13 +15,12 @@ const target = {
 
 const authData = {
     loginURL: target.loginURL,
+    credentialsName: 'instagram',
     user :{ 
-        xpath : "(//input[@name='username'])[1]", 
-        data : credentials.user
+        xpath : "(//input[@name='username'])[1]"
     },
     pass : { 
-        xpath : "(//input[@type='password'])[1]", 
-        data : credentials.pass
+        xpath : "(//input[@type='password'])[1]"
     },
     cookies : true,
     beforeLogin: async () => {
