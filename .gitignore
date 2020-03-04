@@ -4,4 +4,4 @@ config-db.json
 .vscode/
 webdriver.log
 .tmp
-targets/credentials.json
+**/targets/credentials.json
