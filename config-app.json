@@ -1,6 +1,6 @@
 {
     "browser": {
-        "name": "chrome",
+        "name": "brave",
         "headless": false,
         "proxy": {
             "ip": "",
@@ -16,6 +16,13 @@
             "args": []
         },
         "chrome": {
+            "args": [
+                "--start-maximized",
+                "--hide-scrollbars",
+                "--disable-notifications"
+            ]
+        },
+        "brave": {
             "args": [
                 "--start-maximized",
                 "--hide-scrollbars",

@@ -23,6 +23,8 @@ class Core {
             this.configurePhantom(builder);
         } else if ("firefox" === browser) {
             this.configureFirefox(builder);
+        } else if ("brave" === browser) {
+            this.configureChrome(builder, "/usr/bin/brave-browser");
         } else {
             this.configureChrome(builder);
         }
@@ -58,7 +60,7 @@ class Core {
 
         builder.setFirefoxOptions(options);
         builder.withCapabilities({
-            "browserName": "firefox",
+            browserName: "firefox",
             acceptSslCerts: true,
             acceptInsecureCerts: true
         });
@@ -83,7 +85,9 @@ class Core {
 
     }
 
-    configureChrome(builder) {
+    configureChrome(builder, binary = "") {
+
+        logger.info(`Chrome binary: ${binary}`);
 
         let args = config.browser.chrome.args;
         args.push(`--user-agent='${this.buildUserAgent()}'`);
@@ -96,7 +100,7 @@ class Core {
             args.push("--headless");
             args.push("--disable-gpu");
             args.push("--no-sandbox");
-            logger.info("Chrome is in headless mode");
+            logger.info("Browser is in headless mode");
         }
 
         const proxy = config.browser.proxy;
@@ -105,10 +109,11 @@ class Core {
         }
 
         builder.withCapabilities({
-            "browserName": "chrome",
-            "chromeOptions": {
-                "args": args,
-                "w3c" : false
+            browserName : "chrome",
+            chromeOptions: {
+                args: args,
+                w3c : false,
+                binary: binary
             }
         });
 
