@@ -1,6 +1,6 @@
 {
     "browser": {
-        "name": "brave",
+        "name": "firefox",
         "headless": false,
         "proxy": {
             "ip": "",
@@ -37,6 +37,11 @@
                 "--cookies-file=/home/emerson/Downloads/cookies.txt",
                 "--debug=true",
                 "--webdriver-logfile=/home/emerson/Downloads/webdriver.log"
+            ]
+        },
+        "tor": {
+            "args": [
+                "--detach"
             ]
         }
     },

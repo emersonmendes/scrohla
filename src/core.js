@@ -46,16 +46,24 @@ class Core {
 
     configureFirefox(builder) {
 
+        const binary = "/usr/bin/firefox";
         const firefox = require("selenium-webdriver/firefox");
-
         const options = new firefox.Options();
+        let args = "";
 
-        const binary = new firefox.Binary(firefox.Channel.NIGHTLY);
-        options.setBinary(binary);
+        for(const arg of config.browser.firefox.args){
+            args = args.concat(arg);
+        }
 
         if (config.browser.headless) {
-            binary.addArguments("-headless");
+            args = args.concat("-headless");
             logger.info("firefox is in headless mode");
+        }
+
+        if(args){
+            options.setBinary(binary).addArguments(args);
+        } else {
+            options.setBinary(binary);
         }
 
         builder.setFirefoxOptions(options);

@@ -11,9 +11,8 @@
         country: await scrohla.getText("(//*[@id='content']//table//tr[6]/td[2])[1]")
     };
 
-    scrohla.takeScreenshot();
-
-    sendResult(result);
+    await scrohla.takeScreenshot();
+    await sendResult(result);
 
 }
 
