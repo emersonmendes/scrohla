@@ -1,7 +1,7 @@
 {
     "browser": {
         "name": "chrome",
-        "headless": false,
+        "headless": true,
         "proxy": {
             "ip": "",
             "port": ""

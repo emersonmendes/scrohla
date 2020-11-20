@@ -55,21 +55,23 @@ async function collect(scrohla, sendResult) {
 
     const person = response.data.results[0]; 
 
-    const name = person.name.first + " " + person.name.last;
-    const email = person.email;
+    result.name = person.name.first + " " + person.name.last;
+    result.email = person.email;
     
+    result.docNumber = gerarCPF();
 
-    await scrohla.type(gerarCPF(),"(//input[@name='CPF'])[1]");
+    await scrohla.type(result.docNumber,"(//input[@name='CPF'])[1]");
 
     await scrohla.click('//*[@id="root"]/div/div[2]/div/div[3]/div[1]/div[3]/button');
 
-    await scrohla.type(name,"(//input[@name='name'])[1]");
+    await scrohla.type(result.name,"(//input[@name='name'])[1]");
 
-    const phoneNumber = Math.round(Math.random() * 100000000000);
-    await scrohla.type(phoneNumber,"(//input[@name='phoneNumber'])[1]");
+    result.phoneNumber = Math.round(Math.random() * 100000000000);
+    
+    await scrohla.type(result.phoneNumber,"(//input[@name='phoneNumber'])[1]");
 
 
-    await scrohla.type(email,"(//input[@name='emailAddress'])[1]");
+    await scrohla.type(result.email,"(//input[@name='emailAddress'])[1]");
 
     await scrohla.click('//*[@id="root"]/div/div[2]/div/div[3]/div[1]/div[3]/button');
 
