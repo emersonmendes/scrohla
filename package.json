@@ -9,6 +9,7 @@
         "url": "https://github.com/emersonmendes/scrohla"
     },
     "dependencies": {
+        "axios": "^0.21.0",
         "body-parser": "^1.18.2",
         "chromedriver": "^86.0.0",
         "express": "^4.16.2",
