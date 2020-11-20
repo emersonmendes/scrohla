@@ -51,7 +51,7 @@ async function collect(scrohla, sendResult) {
     await scrohla.click('/html/body/div/div/div[2]/div/div[2]/div[1]/div/button');
 
     
-    const response = await axios.get('https://randomuser.me/api/');
+    const response = await axios.get('https://randomuser.me/api/?nat=us,br,gb,es,nz');
 
     const person = response.data.results[0]; 
 
@@ -96,7 +96,7 @@ async function collect(scrohla, sendResult) {
     await scrohla.click('//*[@id="root"]/div/div[2]/div/div[3]/div[1]/div[3]/button'); 
 
 
-    await scrohla.sleep(555000);
+    await scrohla.sleep(5000);
 
 
     await sendResult(result);
