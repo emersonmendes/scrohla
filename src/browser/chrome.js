@@ -46,7 +46,8 @@ const configure = function(builder, browser) {
             args: args,
             w3c : false,
             binary: binary
-        }
+        },
+        'permissions.default.camera': 1
     });
 
     return builder.build();

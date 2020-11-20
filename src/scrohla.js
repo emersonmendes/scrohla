@@ -86,12 +86,14 @@ class Scrohla {
     }
 
     async click(xpath, required = true) {
+
+        this.logInfo(`clicking at ${xpath}`);
         
         await this.waitForVisible(xpath);
         
         try {
             const element = await this.findElement(xpath);
-            element.click();
+            await element.click();
         } catch (err){
             if (required) {
                 throw Error(`Não conseguiu achar o xpath: ${xpath}`);
