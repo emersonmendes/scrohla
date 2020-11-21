@@ -75,6 +75,7 @@ class Scrohla {
      * @param {string} xpath 
      */
     async type(text, xpath) {
+        this.logInfo(`Typing text "${text}" at ${xpath}`);
         await this.waitForVisible(xpath);
         const element = await this.findElement(xpath);
         await element.sendKeys(text);
