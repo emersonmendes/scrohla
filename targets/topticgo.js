@@ -7,7 +7,6 @@ const target = {
     execute: collect
 };
 
-
 function randomize(n) {
     var ranNum = Math.round(Math.random()*n);
     return ranNum;
