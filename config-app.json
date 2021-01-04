@@ -31,16 +31,6 @@
                 "--disable-notifications"
             ]
         },
-        "phantom": {
-            "binaryPath": "/home/emerson/Downloads/phantomjs-2.1.1-linux-x86_64/bin/phantomjs",
-            "args": [
-                "--web-security=false",
-                "--ignore-ssl-errors=true",
-                "--cookies-file=/home/emerson/Downloads/cookies.txt",
-                "--debug=true",
-                "--webdriver-logfile=/home/emerson/Downloads/webdriver.log"
-            ]
-        },
         "tor": {
             "args": [
                 "--detach"
