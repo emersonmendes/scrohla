@@ -1,7 +1,7 @@
 {
     "browser": {
-        "name": "phantom",
-        "headless": true,
+        "name": "brave",
+        "headless": false,
         "proxy": {
             "ip": "",
             "port": ""
@@ -29,11 +29,6 @@
                 "--start-maximized",
                 "--hide-scrollbars",
                 "--disable-notifications"
-            ]
-        },
-        "tor": {
-            "args": [
-                "--detach"
             ]
         }
     },
