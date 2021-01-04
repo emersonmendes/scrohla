@@ -1,6 +1,6 @@
 "use strict";
 
- const collect = async function(scrohla, sendResult) {
+ const collect = async (scrohla, sendResult) => {
 
     scrohla.start();
 
@@ -14,7 +14,7 @@
     await scrohla.takeScreenshot();
     await sendResult(result);
 
-}
+};
 
 exports.target = {
     url: "https://whatismyip.com.br/",

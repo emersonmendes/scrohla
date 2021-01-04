@@ -44,13 +44,17 @@ async function init(targetName, targetUrl, cb){
         custom: target.custom
     });
 
+    async function sendResult (result) {
+        logger.info(`Result => ${JSON.stringify(result,null,4)}`);
+        if(cb){
+            await cb(result);
+        }
+        await endCollect(scrohla);
+    }   
+
     try {
-        await target.execute(scrohla, async (result) => {
-            logger.info(`Result => ${JSON.stringify(result,null,4)}`);
-            cb && await cb(result);
-            await endCollect(scrohla);
-        });
-    } catch(err){
+        await target.execute(scrohla, sendResult);
+    } catch(err) {
         target.auth && cleanCookies(scrohla,target);
         logger.error("Erro interno :( Details: ", err);
         await endCollect(scrohla);

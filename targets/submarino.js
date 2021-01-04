@@ -3,24 +3,14 @@
 const logger = require("../src/logger");
 
 const target = {
-    url: "https://www.submarino.com.br/produto/9417912",
+    url: "https://www.submarino.com.br/produto/1838060832",
     key: "submarino_products",
     execute: collect
 };
 
 async function getPrice(scrohla){
-
-    let price = "";
-
-    try {
-        price = await scrohla.getText("//span[contains(@class,'price__SalesPrice')]");
-    } catch (e) {
-        logger.warn('Não achou a classe price__SalesPrice, tentando por sales-price!');
-        price = await scrohla.getText("//span[contains(@class,'sales-price')]");
-    }
-
+    const price = await scrohla.getText("//span[contains(@class,'price__SalesPrice')]");
     return Number(price.replace("R$ ", "").replace(",", "."));
-
 }
 
 async function collect(scrohla, sendResult) {
