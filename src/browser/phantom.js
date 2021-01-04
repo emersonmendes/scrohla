@@ -15,7 +15,9 @@ const buildUserAgent = function(){
     return userAgent;
 }
 
-const configure = function(builder) {
+const configure = function(webdriver) {
+
+    const builder = new webdriver.Builder();
 
     var caps = webdriver.Capabilities.phantomjs();
     caps.set("phantomjs.binary.path", config.browser.phantom.binaryPath);

@@ -15,7 +15,9 @@ const buildUserAgent = function(){
     return userAgent;
 }
 
-const configure = function(builder, browser) {
+const configure = function(webdriver, browser) {
+
+    const builder = new webdriver.Builder();
 
     const binary = "brave" === browser ? "/usr/bin/brave-browser" : "";
 

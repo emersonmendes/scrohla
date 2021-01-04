@@ -1,6 +1,6 @@
 {
     "browser": {
-        "name": "chrome",
+        "name": "phantom",
         "headless": true,
         "proxy": {
             "ip": "",

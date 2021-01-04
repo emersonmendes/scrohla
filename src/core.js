@@ -17,12 +17,10 @@ class Core {
         const browser = config.browser.name;
         logger.info("Browser:", browser);
 
-        const builder = new webdriver.Builder();
-
         const browserImpl = require(`./browser/${browser}`);
         browserImpl.setParams(this.params);
 
-        this.driver = browserImpl.configure(builder, browser);
+        this.driver = browserImpl.configure(webdriver, browser);
         const resolution = config.browser.resolution;
         this.driver.manage().window().setRect({ width: resolution.w, height: resolution.h });
         this.driver.manage().window().maximize();

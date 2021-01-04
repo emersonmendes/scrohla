@@ -6,7 +6,9 @@ const logger = require("../logger");
 
 const binary = "/usr/bin/firefox";
 
-const configure = function(builder) {
+const configure = function(webdriver) {
+
+    const builder = new webdriver.Builder();
 
     const options = new firefox.Options();
     let args = "";
