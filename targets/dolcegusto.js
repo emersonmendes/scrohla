@@ -3,44 +3,40 @@
 const CODIGO = "e4ww99cjk79w";
 
 const target = {
-    url: "https://www.nescafe-dolcegusto.com.br/mybonus/",
+    url: "https://www.nescafe-dolcegusto.com.br/reward/customer/info/",
     execute: collect
 };
 
-function collect(scrohla, sendResult) {
+async function collect(scrohla, sendResult) {
 
     let result = {};
 
-    scrohla.authenticate({
-        loginURL: target.url,
+    const authData = {
+        loginURL: 'https://www.nescafe-dolcegusto.com.br/customer/account/login',
         credentialsName: 'dolcegusto',
         user: { xpath: "//input[@id='email']" },
         pass: { xpath: "//input[@id='pass']" },
-        beforeLogin: () => {
-            scrohla.mouseMoveTo("//div[@id='header-account']");
-        },
-        cookies: true
-    });
+        cookies: false
+    };
 
-    scrohla.start();
+    await scrohla.authenticate(authData);
+    await scrohla.start();
+    await scrohla.type(CODIGO.replace(/ /g, "").toUpperCase(), "//input[@id='code']");
+    await scrohla.click("//*[@id='reward-pcm-form']//button");
 
-    scrohla.type(CODIGO.replace(/ /g, "").toUpperCase(), "//input[@id='coupon_code']");
-    scrohla.click("//*[@id='pcm-codes-form']//button");
+    let error = "";
 
-    scrohla.waitForLocated("//*[@class='error-msg']", 1505000)
-        .then(() => {
+    try {
+        error = await scrohla.waitForLocated("//*[@data-ui-id='message-error']", 1505000);
+        if(error){
             result.erro = `Codigo ${CODIGO} está inválido ou já foi utilizado!`;
-        })
-        .catch(() => {
-            result.msg = `Codigo ${CODIGO} inserido com sucesso!`;
-        });
+        }
+    } catch(e) {
+        result.msg = `Codigo ${CODIGO} inserido com sucesso!`;
+    }
 
-    scrohla.flow(() => sendResult(result));
+    sendResult(result);
 
 }
 
 exports.target = target;
-
-
-
-

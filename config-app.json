@@ -1,6 +1,6 @@
 {
     "browser": {
-        "name": "brave",
+        "name": "chrome",
         "headless": false,
         "proxy": {
             "ip": "",

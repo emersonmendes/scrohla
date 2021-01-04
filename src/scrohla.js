@@ -26,24 +26,10 @@ class Scrohla {
         logger.warn(text);
     }
 
-    async doLogin(dto) {
-
-        const credentialsFile = "../targets/credentials.json";
-        let credential;
-
-        try {
-            credential = require(credentialsFile)[dto.credentialsName];
-            await this.type(credential.user, dto.user.xpath);
-            await this.type(credential.pass, dto.pass.xpath);
-            await this.submit(`${dto.pass.xpath}//ancestor::form`);
-        } catch(err){
-            if(err.message && err.message.includes('Cannot find module')){
-                logger.error(`Arquivo ${credentialsFile} não foi encontrado!\n\nCrie o arquivo com conteúdo ex: \n${JSON.stringify({"linkedin":{"user":"username","pass":"123"}}, null, 4)}`);
-            } else {
-                logger.error(err);
-            }
-        }
-
+    async doLogin(dto, credential) {
+        await this.type(credential.user, dto.user.xpath);
+        await this.type(credential.pass, dto.pass.xpath);
+        await this.submit(`${dto.pass.xpath}//ancestor::form`);
     }
 
     async authenticate(dto) {
@@ -52,8 +38,21 @@ class Scrohla {
             await this.goTo(dto.loginURL);
         }
 
+        const credentialsFile = "../targets/credentials.json";
+        let credential;
+
+        try {
+            credential = require(credentialsFile)[dto.credentialsName];
+        } catch(err){
+            if(err.message && err.message.includes('Cannot find module')){
+                logger.error(`Arquivo ${credentialsFile} não foi encontrado!\n\nCrie o arquivo com conteúdo ex: \n${JSON.stringify({"linkedin":{"user":"username","pass":"123"}}, null, 4)}`);
+            } else {
+                logger.error(err);
+            }
+        }
+
         dto.beforeLogin && dto.beforeLogin();
-        const cookies = `${this.params.targetName}-${dto.user.data}`;
+        const cookies = `${this.params.targetName}-${credential.user}`;
         const cookieManager = new CookieManager(cookies, this.getDriver());
 
         if (dto.cookies && cookieManager.exists()) {
@@ -62,7 +61,7 @@ class Scrohla {
             await this.sleep(3000);
         } else {
             this.logInfo("Doing login ...");
-            await this.doLogin(dto);
+            await this.doLogin(dto, credential);
             await this.sleep(3000);
             await cookieManager.store();
         }
@@ -233,7 +232,8 @@ class Scrohla {
     }
 
     async mouseMoveTo(xpath) {
-        await this.getDriver().actions().mouseMove(this.waitForLocated(xpath)).perform();
+        const element = await this.waitForLocated(xpath);
+        await this.getDriver().actions().move({ oringin: element }).perform();
     }
 
     async reload() {
