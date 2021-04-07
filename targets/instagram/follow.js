@@ -8,7 +8,7 @@ const target = {
     url : "https://www.instagram.com/floripamilgrau/",
     loginURL : "https://www.instagram.com/accounts/login",
     custom : {
-        userAgent : "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
+        //userAgent : "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3"
     },
     execute : collect
 };
@@ -22,7 +22,7 @@ const authData = {
     pass : { 
         xpath : "(//input[@type='password'])[1]"
     },
-    cookies : true,
+    cookies : false,
     beforeLogin: async () => {
         await _scrohla.waitForLocated("//form");
     }
@@ -38,15 +38,11 @@ async function collect(scrohla, sendResult){
 
     await scrohla.start();
 
-    const attrib = await scrohla.getAttrib("//section/main/div/header//*[contains(@href,'followers')]//span","title");
-    result.followers = Number(attrib.replace(new RegExp(",", "g"),""));
-
-    await scrohla.click("//section/main/div/header//*[contains(@href,'followers')]");
+    await scrohla.click('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a');
 
     await scrohla.waitForLocated("//*[@class='isgrP']");
-    logger.info("Followers encontrados: %s", result.followers);
 
-    for (let index = 0; index < 150; index++) {
+    for (let index = 0; index < 5; index++) {
         await scrohla.executeJs("document.querySelector('.isgrP').scrollBy(0,50000)", "");
         await scrohla.sleep(2000);
         const elements = await scrohla.findElements("//*[@class='jSC57  _6xe7A']//*[@class='wo9IH']");
@@ -74,7 +70,7 @@ async function collect(scrohla, sendResult){
 
     result.qtClicked = qtClicked;
 
-    sendResult(result);
+    await sendResult(result);
 
 }    
 

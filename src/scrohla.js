@@ -34,6 +34,8 @@ class Scrohla {
 
     async authenticate(dto) {
 
+        logger.info(dto);
+
         if(dto.loginURL){
             await this.goTo(dto.loginURL);
         }
