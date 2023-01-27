@@ -82,6 +82,13 @@ class Scrohla {
         await element.sendKeys(text);
     }
 
+    async clear(xpath) {
+        this.logInfo(`Clean input at ${xpath}`);
+        await this.waitForVisible(xpath);
+        const element = await this.findElement(xpath);
+        await element.clear();
+    }
+
     async submit(xpath) {
         const element = await this.waitForLocated(xpath);
         element.submit();

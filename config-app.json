@@ -20,6 +20,8 @@
                 "--start-maximized",
                 "--hide-scrollbars",
                 "--disable-notifications",
+                "--ignore-ssl-errors=yes",
+                "--ignore-certificate-errors",
                 "use-fake-device-for-media-stream",
                 "use-fake-ui-for-media-stream"
             ]
