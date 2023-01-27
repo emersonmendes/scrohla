@@ -8,9 +8,8 @@ const target = {
     groupName: 'Grupo recorrente',
     finalDate: '01/06/2023',
     documentList: [
-        '07063259903',
         '21323121321',
-        '04905376939'
+        '04905376900'
     ]
 };
 
