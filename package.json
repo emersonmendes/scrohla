@@ -12,7 +12,7 @@
         "axios": "^0.21.0",
         "body-parser": "^1.18.2",
         "chromedriver": "^109.0.0",
-        "express": "^4.16.2",
+        "express": "^4.17.3",
         "geckodriver": "^1.22.3",
         "minimist": "^1.2.2",
         "moment": "^2.29.4",
