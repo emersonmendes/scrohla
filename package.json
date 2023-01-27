@@ -14,7 +14,7 @@
         "chromedriver": "^109.0.0",
         "express": "^4.16.2",
         "geckodriver": "^1.22.3",
-        "minimist": "^1.2.2",
+        "minimist": "^1.2.6",
         "moment": "^2.29.4",
         "request": "^2.88.2",
         "selenium-webdriver": "^4.0.0-alpha.8",
