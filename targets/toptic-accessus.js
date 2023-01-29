@@ -3,13 +3,12 @@
 const axios = require('axios');
 
 const target = {
-    url: "https://demo.toptic.com.br/accessus/",
+    url: "https://localhost/accessus/",
     execute: collect,
-    groupName: 'Grupo recorrente',
+    groupName: 'Simulator',
     finalDate: '01/06/2023',
     documentList: [
-        '21323121321',
-        '04905376900'
+        
     ]
 };
 
@@ -27,8 +26,7 @@ async function collect(scrohla, sendResult) {
     await scrohla.authenticate(authData);
     
     await scrohla.click("/html/body/div[5]/div/div[5]/a[1]");
-    await scrohla.click('//*[@id="user-home-menu"]/li/a/span');
-    await scrohla.click('//*[@id="access-home-submenu"]/a/span');
+    await scrohla.goTo(`${target.url}#!/home/access-home`);
 
     for(const doc of target.documentList){
 
