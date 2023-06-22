@@ -4,6 +4,7 @@ const { Scrohla } = require("./src/scrohla");
 const { CookieManager } = require("./src/cookie-manager");
 const logger = require("./src/logger");
 const config = require("./config-app.json");
+const { log } = require("winston");
 
 const cleanCookies = function(scrohla, target){
     new CookieManager(
@@ -28,7 +29,7 @@ async function endCollect(scrohla){
    
 }
 
-async function init(targetName, targetUrl, cb){
+async function init(targetName, targetUrl, targetData, cb){
 
     console.time("Process time");  // eslint-disable-line 
     
@@ -53,7 +54,12 @@ async function init(targetName, targetUrl, cb){
     }   
 
     try {
-        await target.execute(scrohla, sendResult);
+        if(targetData){
+            logger.info(`--data: ${targetData}`)
+            await target.execute(scrohla, JSON.parse(targetData), sendResult);
+        } else {
+            await target.execute(scrohla, sendResult);
+        }
     } catch(err) {
         target.auth && cleanCookies(scrohla,target);
         logger.error("Erro interno :( Details: ", err);
@@ -72,9 +78,10 @@ function getParam(param){
 
 const targetName = getParam("--target");
 const targetUrl = getParam("--url");
+const targetData = getParam("--data");
 
 if(targetName || targetUrl){
-    init(targetName, targetUrl); 
+    init(targetName, targetUrl, targetData); 
 }
 
 module.exports = { init : init };

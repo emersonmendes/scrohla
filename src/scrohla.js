@@ -27,9 +27,21 @@ class Scrohla {
     }
 
     async doLogin(dto, credential) {
+        
         await this.type(credential.user, dto.user.xpath);
+
+        if(dto.afterUsername){
+            await dto.afterUsername();
+        }
+
         await this.type(credential.pass, dto.pass.xpath);
+
+        if(dto.afterPassword){
+            await dto.afterPassword();
+        }
+    
         await this.submit(`${dto.pass.xpath}//ancestor::form`);
+    
     }
 
     async authenticate(dto) {
@@ -53,18 +65,21 @@ class Scrohla {
             }
         }
 
-        dto.beforeLogin && dto.beforeLogin();
+        if(dto.beforeLogin){
+            await dto.beforeLogin();
+        } 
+        
         const cookies = `${this.params.targetName}-${credential.user}`;
         const cookieManager = new CookieManager(cookies, this.getDriver());
 
         if (dto.cookies && cookieManager.exists()) {
             this.logInfo(`Using cookies: ${cookies}`);
             await cookieManager.inject(() => this.reload());
-            await this.sleep(3000);
+            await this.sleep(10000);
         } else {
             this.logInfo("Doing login ...");
             await this.doLogin(dto, credential);
-            await this.sleep(3000);
+            await this.sleep(15000);
             await cookieManager.store();
         }
 
@@ -77,14 +92,14 @@ class Scrohla {
      */
     async type(text, xpath) {
         this.logInfo(`Typing text "${text}" at ${xpath}`);
-        await this.waitForVisible(xpath);
+        await this.waitForLocated(xpath);
         const element = await this.findElement(xpath);
         await element.sendKeys(text);
     }
 
     async clear(xpath) {
         this.logInfo(`Clean input at ${xpath}`);
-        await this.waitForVisible(xpath);
+        await this.waitForLocated(xpath);
         const element = await this.findElement(xpath);
         await element.clear();
     }
@@ -98,7 +113,7 @@ class Scrohla {
 
         this.logInfo(`clicking at ${xpath}`);
         
-        await this.waitForVisible(xpath);
+        await this.waitForLocated(xpath);
         
         try {
             const element = await this.findElement(xpath);
@@ -125,7 +140,7 @@ class Scrohla {
      * @param {string} xpath 
      * @param {number} time 
      */
-    async getText(xpath, time) {
+    async getText(xpath, time = 2000) {
         const element = await this.waitForLocated(xpath, time);
         return element.getText();
     }
@@ -179,7 +194,7 @@ class Scrohla {
      * @param { string } xpath 
      * @param { number } time 
      */
-    async waitForNotVisible(xpath, time = defaultTimeout) {
+    async waitForNotVisible(xpath, time = defaultTimeout) { 
         const element = await this.findElement(xpath);
         return await this.getDriver().wait(this.until().elementIsNotVisible(element), time);
     }
@@ -245,6 +260,16 @@ class Scrohla {
         await this.getDriver().actions().move({ oringin: element }).perform();
     }
 
+    async switchToIframe(xpath) {
+        const element = await this.waitForLocated(xpath);
+        await this.getDriver().switchTo().frame(element);
+    }
+
+    async switchBackFromIframe() {
+        const element = await this.waitForLocated(xpath);
+        await this.getDriver().switchTo().defaultContent();
+    }
+
     async reload() {
         this.logInfo("Reloading ...");
         await this.getDriver().navigate().refresh();
@@ -255,8 +280,11 @@ class Scrohla {
         return await this.getDriver().sleep(ms);
     }
 
-    getKey() {
-        return this.Key;
+    async getKey(key) {
+        if(key){
+           return await this.Key[key]
+        }
+        return await this.Key;
     }
 
     getBy() {

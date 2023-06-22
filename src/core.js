@@ -22,6 +22,7 @@ class Core {
 
         this.driver = browserImpl.configure(webdriver, browser);
         const resolution = config.browser.resolution;
+        this.driver.executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         this.driver.manage().window().setRect({ width: resolution.w, height: resolution.h });
         this.driver.manage().window().maximize();
         this.driver.manage().setTimeouts({

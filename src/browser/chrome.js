@@ -19,10 +19,12 @@ const configure = function(webdriver, browser) {
 
     const builder = new webdriver.Builder();
 
+    
     const binary = "brave" === browser ? "/usr/bin/brave-browser" : "";
 
     let args = config.browser.chrome.args;
     args.push(`--user-agent='${buildUserAgent()}'`);
+    args.push("--disable-blink-features=AutomationControlled");
 
     if (params.args) {
         args = args.concat(params.args);
@@ -47,7 +49,9 @@ const configure = function(webdriver, browser) {
         chromeOptions: {
             args: args,
             w3c : false,
-            binary: binary
+            binary: binary,
+            excludeSwitches: ['enable-automation'],
+            useAutomationExtension: false
         },
         'permissions.default.camera': 1
     });

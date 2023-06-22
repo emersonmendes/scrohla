@@ -7,9 +7,7 @@ const target = {
     execute: collect,
     groupName: 'Simulator',
     finalDate: '01/06/2023',
-    documentList: [
-        
-    ]
+    documentList: []
 };
 
 const authData = {
