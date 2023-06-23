@@ -78,7 +78,7 @@ async function collect(scrohla, targetData, sendResult){
 
     await scrohla.click("//*[@name='PUBLIC' and contains(@role,'radio')]");
     
-    await scrohla.sleep(11000 * 60 * 2);
+    await scrohla.sleep(1000 * 60 * 2);
 
     await sendResult(result);
 
