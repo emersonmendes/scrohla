@@ -77,6 +77,10 @@ async function collect(scrohla, targetData, sendResult){
     await scrohla.click(nextButtonEL);
 
     await scrohla.click("//*[@name='PUBLIC' and contains(@role,'radio')]");
+
+    await _scrohla.sleep(3000);
+    await _scrohla.waitForVisible("//*[@id='done-button']");
+    await _scrohla.click("//*[@id='done-button']");
     
     await scrohla.sleep(1000 * 60 * 2);
 
@@ -84,19 +88,15 @@ async function collect(scrohla, targetData, sendResult){
 
 }    
 
-async function selectPlaylist(){
-    
-    // const playlistEl = "//*[contains(@class,'playlist')]";
-    // try {
-    //     await _scrohla.click(`${playlistEl}//span`);
-    //     await _scrohla.sleep(2000);
-    //     await _scrohla.click(`(${playlistEl}//div[@id='items']//li//label)[1]`);
-    //     await _scrohla.sleep(3000);
-    //     await _scrohla.waitForVisible("//*[@id='done-button']");
-    //     await _scrohla.click("//*[@id='done-button']");
-    // } catch(e){
-    //     logger.warn('Could not select playlist!');
-    // }
+async function selectPlaylist(){   
+    const playlistEl = "//*[contains(@class,'playlist')]";
+    try {
+        await _scrohla.click(`${playlistEl}//span`);
+        await _scrohla.sleep(2000);
+        await _scrohla.click(`(${playlistEl}//div[@id='items']//li//label)[1]`);
+    } catch(e){
+        logger.warn('Could not select playlist!');
+    }
 }
 
 exports.target = target;
