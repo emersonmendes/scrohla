@@ -73,15 +73,15 @@ async function collect(scrohla, targetData, sendResult){
 
     await scrohla.type(targetData.videoDescription, "//div[contains(@class,'description')]//div[@id='textbox']");
 
+    await selectPlaylist();
+    await _scrohla.sleep(3000);
+
     await scrohla.click(nextButtonEL);
     await scrohla.sleep(2000);
 
     await scrohla.click("//*[@name='VIDEO_MADE_FOR_KIDS_NOT_MFK' and contains(@role,'radio')]");
     await scrohla.sleep(2000);
 
-    await selectPlaylist();
-    await _scrohla.sleep(3000);
-        
     await scrohla.click(nextButtonEL);
     await scrohla.sleep(1000);
     await scrohla.click(nextButtonEL);
@@ -90,11 +90,9 @@ async function collect(scrohla, targetData, sendResult){
     await scrohla.sleep(1000);
 
     await scrohla.click("//*[@name='PUBLIC' and contains(@role,'radio')]");
+    await _scrohla.sleep(1000);    
 
-    await _scrohla.sleep(3000);
-    await _scrohla.waitForVisible("//*[@id='done-button']");
-    await _scrohla.click("//*[@id='done-button']");
-    
+    await _scrohla.click("//*[@id='done-button']"); 
     await scrohla.sleep(1000 * 60 * 2);
 
     await sendResult(result);
@@ -107,8 +105,9 @@ async function selectPlaylist(){
         await _scrohla.click(`${playlistEl}//span`);
         await _scrohla.sleep(2000);
         await _scrohla.click(`(${playlistEl}//div[@id='items']//li//label)[1]`);
-        const esc = await scrohla.getKey('ESCAPE');
-        await scrohla.type(esc, playlistEl);
+        await _scrohla.waitForVisible("//*[@id='done-button']");
+        await _scrohla.click("//*[contains(@class,'done')]");
+        await _scrohla.sleep(1000);    
     } catch(e){
         logger.warn('Could not select playlist!');
     }
