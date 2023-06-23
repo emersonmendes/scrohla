@@ -57,10 +57,16 @@ async function collect(scrohla, targetData, sendResult){
     const element = await scrohla.findElement("//input[@type='file']");
     await element.sendKeys(targetData.videoPath);   
     
-    await scrohla.sleep(2000);
+    await scrohla.sleep(5000);
 
-    await scrohla.clear(titleEl);
-    await scrohla.sleep(1000);
+    const del = await scrohla.getKey('DELETE');
+    await scrohla.type(del, titleEl);
+    await scrohla.type(del, titleEl);
+    await scrohla.type(del, titleEl);
+    await scrohla.type(del, titleEl);
+    await scrohla.type(del, titleEl);
+
+    await scrohla.sleep(2000);
 
     await scrohla.type(targetData.videoTitle, titleEl);
 
