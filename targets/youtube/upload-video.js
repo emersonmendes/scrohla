@@ -107,6 +107,8 @@ async function selectPlaylist(){
         await _scrohla.click(`${playlistEl}//span`);
         await _scrohla.sleep(2000);
         await _scrohla.click(`(${playlistEl}//div[@id='items']//li//label)[1]`);
+        const esc = await scrohla.getKey('ESCAPE');
+        await scrohla.type(esc, playlistEl);
     } catch(e){
         logger.warn('Could not select playlist!');
     }
