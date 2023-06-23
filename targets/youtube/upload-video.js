@@ -58,12 +58,9 @@ async function collect(scrohla, targetData, sendResult){
     await element.sendKeys(targetData.videoPath);   
     
     await scrohla.sleep(2000);
-    const del = await scrohla.getKey('DELETE');
-    await scrohla.type(del, titleEl);
-    await scrohla.type(del, titleEl);
-    await scrohla.type(del, titleEl);
-    await scrohla.type(del, titleEl);
-    await scrohla.type(del, titleEl);
+
+    await scrohla.clear(titleEl);
+    await scrohla.sleep(1000);
 
     await scrohla.type(targetData.videoTitle, titleEl);
 
@@ -88,17 +85,18 @@ async function collect(scrohla, targetData, sendResult){
 }    
 
 async function selectPlaylist(){
-    const playlistEl = "//*[contains(@class,'playlist')]";
-    try {
-        await _scrohla.click(`${playlistEl}//span`);
-        await _scrohla.sleep(2000);
-        await _scrohla.click(`(${playlistEl}//div[@id='items']//li//label)[1]`);
-        await _scrohla.sleep(3000);
-        await _scrohla.waitForVisible("//*[@id='done-button']");
-        await _scrohla.click("//*[@id='done-button']");
-    } catch(e){
-        logger.warn('Could not select playlist!');
-    }
+    
+    // const playlistEl = "//*[contains(@class,'playlist')]";
+    // try {
+    //     await _scrohla.click(`${playlistEl}//span`);
+    //     await _scrohla.sleep(2000);
+    //     await _scrohla.click(`(${playlistEl}//div[@id='items']//li//label)[1]`);
+    //     await _scrohla.sleep(3000);
+    //     await _scrohla.waitForVisible("//*[@id='done-button']");
+    //     await _scrohla.click("//*[@id='done-button']");
+    // } catch(e){
+    //     logger.warn('Could not select playlist!');
+    // }
 }
 
 exports.target = target;
