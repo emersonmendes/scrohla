@@ -52,7 +52,9 @@ async function collect(scrohla, targetData, sendResult){
     await scrohla.click("//*[text()='Next']");
     await scrohla.click("//*[text()='Next']");
 
-    await scrohla.type(targetData.videoDescription, "//div[@role='textbox']");
+    const hashtags = targetData.hashtags.join(" ");
+    const description = `${targetData.videoDescription}\n\n${hashtags}`;
+    await scrohla.type(description, "//div[@role='textbox']");
     
     await scrohla.click("//*[text()='Share']");
 

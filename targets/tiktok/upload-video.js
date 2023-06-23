@@ -53,8 +53,10 @@ async function collect(scrohla, targetData, sendResult){
 
     const captionInput = "//div[contains(@class,'caption')]//span[@data-text='true']";
 
+    const hashtags = targetData.hashtags.join(" ");
+    const description = `${targetData.videoDescription}\n\n${hashtags}`;
     
-    await scrohla.type(targetData.videoDescription, captionInput);
+    await scrohla.type(description, captionInput);
 
     await scrohla.sleep(2000);
     
