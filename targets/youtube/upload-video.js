@@ -69,18 +69,25 @@ async function collect(scrohla, targetData, sendResult){
     await scrohla.sleep(2000);
 
     await scrohla.type(targetData.videoTitle, titleEl);
+    await scrohla.sleep(2000);
 
     await scrohla.type(targetData.videoDescription, "//div[contains(@class,'description')]//div[@id='textbox']");
 
     await scrohla.click(nextButtonEL);
+    await scrohla.sleep(2000);
 
     await scrohla.click("//*[@name='VIDEO_MADE_FOR_KIDS_NOT_MFK' and contains(@role,'radio')]");
+    await scrohla.sleep(2000);
 
     await selectPlaylist();
+    await _scrohla.sleep(3000);
         
     await scrohla.click(nextButtonEL);
+    await scrohla.sleep(1000);
     await scrohla.click(nextButtonEL);
+    await scrohla.sleep(1000);
     await scrohla.click(nextButtonEL);
+    await scrohla.sleep(1000);
 
     await scrohla.click("//*[@name='PUBLIC' and contains(@role,'radio')]");
 
