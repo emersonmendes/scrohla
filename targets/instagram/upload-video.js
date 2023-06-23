@@ -39,22 +39,30 @@ async function collect(scrohla, targetData, sendResult){
     await scrohla.start();
 
     await scrohla.click('//*[@aria-label="New post"]');
+    await scrohla.sleep(2000);
 
     await scrohla.waitForLocated("//input[@type='file']");
+    await scrohla.sleep(1000);
 
     const element = await scrohla.findElement("//input[ @type='file' and contains(@accept,'video') ]");
     await element.sendKeys(targetData.videoPath);
+    await scrohla.sleep(2000);
 
-    await scrohla.click("//button[text()='OK']");
+    try { await scrohla.click("//button[text()='OK']"); }catch(e){}
+    
     await scrohla.click("//*[@aria-label='Select crop']//..//..//..//button");
     await scrohla.click("(//*[contains(@aria-label,'Photo')]//..//../div)[1]");
+    await scrohla.sleep(2000);
 
     await scrohla.click("//*[text()='Next']");
+    await scrohla.sleep(1000);
     await scrohla.click("//*[text()='Next']");
+    await scrohla.sleep(1000);
 
     const hashtags = targetData.hashtags.join(" ");
     const description = `${targetData.videoDescription}\n\n${hashtags}`;
     await scrohla.type(description, "//div[@role='textbox']");
+    await scrohla.sleep(2000);
     
     await scrohla.click("//*[text()='Share']");
 
