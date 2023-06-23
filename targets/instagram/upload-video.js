@@ -41,7 +41,7 @@ async function collect(scrohla, targetData, sendResult){
     await scrohla.click('//*[@aria-label="New post"]');
     await scrohla.sleep(2000);
 
-    await scrohla.waitForLocated("//input[@type='file']");
+    await scrohla.waitForLocated("//input[ @type='file' and contains(@accept,'video') ]");
     await scrohla.sleep(1000);
 
     const element = await scrohla.findElement("//input[ @type='file' and contains(@accept,'video') ]");
