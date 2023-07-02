@@ -66,7 +66,7 @@ async function collect(scrohla, targetData, sendResult){
     
     await scrohla.click("//*[text()='Share']");
 
-    await scrohla.sleep(1000 * 60 * 5);
+    await scrohla.sleep(1000 * 60 * 1);
 
     await sendResult(result);
 
