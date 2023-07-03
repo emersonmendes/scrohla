@@ -74,7 +74,7 @@ async function collect(scrohla, targetData, sendResult){
 
     await scrohla.scrollToPageBottom();
 
-    await scrohla.click("//div[contains(@class,'switch-text')]/..//div[@class='tiktok-switch']");
+    await scrohla.click("//*[contains(@class,'switch-text')]/..//input");
     await scrohla.sleep(1000);
 
     await scrohla.click("//div[contains(@class,'btn-post')]//button");
