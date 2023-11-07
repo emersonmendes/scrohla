@@ -1,6 +1,6 @@
 # Schrola :)
 
-> Project for study purposes
+### Project for study purposes
 
 ### Install project
 
