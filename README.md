@@ -1,4 +1,4 @@
-# Schrola :)
+# Schrola 😀
 
 > Project for study purposes
 
