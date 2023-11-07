@@ -1,4 +1,4 @@
-> Obs: Projeto apenas para fins de testes
+> Project for study purposes
 
 ### Install project
 
