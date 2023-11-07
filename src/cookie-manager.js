@@ -64,7 +64,9 @@ class CookieManager {
     }
 
     clean(){
-        this.exists() && fs.unlink(this.cookiesFile);
+        if(this.exists()){
+            fs.unlink(this.cookiesFile);
+        }
     }
 
 }
