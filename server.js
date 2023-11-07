@@ -29,7 +29,7 @@ function createWorkers() {
 
     const numCPUs = require("os").cpus().length;
 
-    logger.info("Creating workers. Cpus:", numCPUs);
+    logger.info(`Creating workers. Cpus: ${numCPUs}`);
 
     for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
